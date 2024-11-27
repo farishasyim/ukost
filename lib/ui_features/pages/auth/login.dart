@@ -3,8 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ukost/config/assets.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/components/buttons/primary_button.dart';
 import 'package:ukost/ui_features/components/inputs/textfield_primary.dart';
+import 'package:ukost/ui_features/layouts/template.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -108,7 +110,9 @@ class _LoginPageState extends State<LoginPage> {
                   radius: 6,
                   label: "Login",
                   color: ColorAsset.violet,
-                  onTap: () {},
+                  onTap: () {
+                    nextScreen(const TemplatePage());
+                  },
                 ),
                 verticalSpace(15),
                 Row(

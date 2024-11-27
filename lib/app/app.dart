@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/pages/auth/login.dart';
 
 class App extends StatelessWidget {
@@ -6,8 +7,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginPage(),
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      home: const LoginPage(),
     );
   }
 }
