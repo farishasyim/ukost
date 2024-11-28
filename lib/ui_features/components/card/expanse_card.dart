@@ -30,7 +30,7 @@ class ExpanseCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: ColorAsset.violet.withOpacity(0.4),
+                color: ColorAsset.black.withOpacity(0.2),
               ),
             ),
             child: Row(

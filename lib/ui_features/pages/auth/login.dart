@@ -6,7 +6,7 @@ import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/components/buttons/primary_button.dart';
 import 'package:ukost/ui_features/components/inputs/textfield_primary.dart';
-import 'package:ukost/ui_features/layouts/template.dart';
+import 'package:ukost/ui_features/layout/template.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

@@ -29,17 +29,18 @@ class HorizontalText extends StatelessWidget {
               fontSize: 16,
             ),
           ),
-          InkWell(
-            onTap: onTap,
-            child: Text(
-              trailing ?? "",
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.normal,
-                color: ColorAsset.black.withOpacity(0.6),
-                fontSize: 12,
+          if (trailing != null)
+            InkWell(
+              onTap: onTap,
+              child: Text(
+                trailing ?? "",
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.normal,
+                  color: ColorAsset.black.withOpacity(0.6),
+                  fontSize: 12,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

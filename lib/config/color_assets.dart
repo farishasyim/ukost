@@ -9,4 +9,6 @@ class ColorAsset {
   static Color black = const Color.fromARGB(255, 40, 40, 40);
 
   static Color red = const Color.fromRGBO(165, 59, 60, 1);
+
+  static Color success = const Color.fromARGB(255, 130, 236, 38);
 }
