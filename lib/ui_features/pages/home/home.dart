@@ -43,98 +43,99 @@ class HomePage extends StatelessWidget {
       },
     ];
     return SingleChildScrollView(
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            verticalSpace(10),
-            const AppBarPrimary(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Divider(
-                color: ColorAsset.violet,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const AppBarPrimary(
+            height: null,
+            title: "Selamat Datang,",
+            subtitle: "Admin",
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Divider(
+              color: ColorAsset.violet,
             ),
-            verticalSpace(10),
-            HorizontalText(
-              title: "Pengeluaran November 2024",
-              trailing: "Detil",
-              onTap: () {},
+          ),
+          verticalSpace(10),
+          HorizontalText(
+            title: "Pengeluaran November 2024",
+            trailing: "Detil",
+            onTap: () {},
+          ),
+          verticalSpace(10),
+          SizedBox(
+            height: 70,
+            width: screenWidth(context),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: 20),
+              children: [
+                for (var i = 1; i < 5; i++)
+                  ExpanseCard(
+                    onTap: () {},
+                    title: "Admin $i",
+                    subtitle: "Pembelian gembok asdasdas as dadad sas a",
+                  ),
+              ],
             ),
-            verticalSpace(10),
-            SizedBox(
-              height: 70,
-              width: screenWidth(context),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.only(left: 20),
-                children: [
-                  for (var i = 0; i < 4; i++)
-                    ExpanseCard(
-                      onTap: () {},
-                      title: "Pnegguna A",
-                      subtitle: "Pembelian gembok asdasdas as dadad sas a",
-                    ),
-                ],
-              ),
+          ),
+          verticalSpace(20),
+          HorizontalText(
+            title: "Jenis Kamar",
+            trailing: "Detil",
+            onTap: () {},
+          ),
+          verticalSpace(10),
+          SizedBox(
+            height: 200,
+            width: screenWidth(context),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: 20),
+              children: [
+                for (var i = 1; i < 4; i++)
+                  RoomCard(
+                    onTap: () {},
+                    title: "Jenis Kamar $i",
+                    subtitle: "Rp. $i,000,000",
+                  ),
+              ],
             ),
-            verticalSpace(20),
-            HorizontalText(
-              title: "Jenis Kamar",
-              trailing: "Detil",
-              onTap: () {},
-            ),
-            verticalSpace(10),
-            SizedBox(
+          ),
+          verticalSpace(20),
+          const HorizontalText(
+            title: "Pembayaran",
+            trailing: "7 Hari Terakhir",
+          ),
+          verticalSpace(10),
+          Center(
+            child: SizedBox(
               height: 200,
-              width: screenWidth(context),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.only(left: 20),
-                children: [
-                  for (var i = 0; i < 4; i++)
-                    RoomCard(
-                      onTap: () {},
-                      title: "Room $i",
-                      subtitle: "$i",
+              width: screenWidth(context) * 0.9,
+              child: SfCartesianChart(
+                primaryXAxis: const CategoryAxis(),
+                // Chart title
+                title: const ChartTitle(text: ''),
+                tooltipBehavior: TooltipBehavior(enable: true),
+                series: <LineSeries<Map, String>>[
+                  LineSeries<Map, String>(
+                    dataSource: lines,
+                    markerSettings: const MarkerSettings(isVisible: true),
+                    xValueMapper: (income, _) => income["label"],
+                    yValueMapper: (income, _) => income["value"],
+                    // Enable data label
+                    dataLabelSettings: const DataLabelSettings(
+                      isVisible: false,
                     ),
+                  ),
                 ],
               ),
             ),
-            verticalSpace(20),
-            const HorizontalText(
-              title: "Pembayaran",
-              trailing: "7 Hari Terakhir",
-            ),
-            verticalSpace(10),
-            Center(
-              child: SizedBox(
-                height: 200,
-                width: screenWidth(context) * 0.9,
-                child: SfCartesianChart(
-                  primaryXAxis: const CategoryAxis(),
-                  // Chart title
-                  title: const ChartTitle(text: ''),
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  series: <LineSeries<Map, String>>[
-                    LineSeries<Map, String>(
-                      dataSource: lines,
-                      markerSettings: const MarkerSettings(isVisible: true),
-                      xValueMapper: (income, _) => income["label"],
-                      yValueMapper: (income, _) => income["value"],
-                      // Enable data label
-                      dataLabelSettings: const DataLabelSettings(
-                        isVisible: false,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            verticalSpace(20),
-          ],
-        ),
+          ),
+          verticalSpace(20),
+        ],
       ),
     );
   }

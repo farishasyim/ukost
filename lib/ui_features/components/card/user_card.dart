@@ -8,18 +8,21 @@ class UserCard extends StatelessWidget {
     this.active = false,
     this.title,
     this.subtitle,
+    this.padding,
   });
   final String? title, subtitle;
   final bool active;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 20,
-        right: 20,
-        bottom: 20,
-      ),
+      padding: padding ??
+          const EdgeInsets.only(
+            left: 20,
+            right: 20,
+            bottom: 20,
+          ),
       child: ListTile(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),

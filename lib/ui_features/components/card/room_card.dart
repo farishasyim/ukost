@@ -66,9 +66,9 @@ class RoomCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "Rp. ${subtitle ?? "0"}",
+                          subtitle ?? "",
                           style: GoogleFonts.inter(
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w300,
                             color: ColorAsset.black,
                             fontSize: 14,
                           ),

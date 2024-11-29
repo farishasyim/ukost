@@ -12,11 +12,16 @@ class ProfilePage extends StatelessWidget {
     List<Map<String, dynamic>> menus = [
       {
         "icon": Icons.person,
-        "label": "Ubah profile",
+        "label": "Ubah profil",
+      },
+      {
+        "icon": Icons.report,
+        "label": "Komplain",
       },
       {
         "icon": Icons.logout,
         "label": "Keluar",
+        "color": ColorAsset.red,
       },
     ];
     return SingleChildScrollView(
@@ -26,7 +31,9 @@ class ProfilePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             verticalSpace(20),
-            const ProfileButton(),
+            ProfileButton(
+              onTap: () {},
+            ),
             verticalSpace(10),
             Text(
               "Faris Hasyim",
@@ -49,23 +56,25 @@ class ProfilePage extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                           side: BorderSide(
-                            color: ColorAsset.black.withOpacity(0.8),
+                            color: ColorAsset.black.withOpacity(0.3),
                           ),
                         ),
                         dense: true,
                         onTap: () {},
                         leading: Icon(
                           row["icon"],
-                          color: ColorAsset.black.withOpacity(
-                            0.8,
-                          ),
+                          color: row["color"] ??
+                              ColorAsset.black.withOpacity(
+                                0.8,
+                              ),
                         ),
                         title: Text(
                           row["label"],
                           style: GoogleFonts.inter(
-                            color: ColorAsset.black.withOpacity(
-                              0.8,
-                            ),
+                            color: row["color"] ??
+                                ColorAsset.black.withOpacity(
+                                  0.8,
+                                ),
                           ),
                         ),
                       ),

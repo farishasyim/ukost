@@ -5,6 +5,7 @@ import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/components/buttons/primary_button.dart';
+import 'package:ukost/ui_features/components/carousel/carousel.dart';
 import 'package:ukost/ui_features/components/inputs/textfield_primary.dart';
 import 'package:ukost/ui_features/layout/template.dart';
 
@@ -20,27 +21,19 @@ class _LoginPageState extends State<LoginPage> {
       passwordController = TextEditingController();
 
   ValueNotifier<bool> isObs = ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: ListView(
         children: [
-          SizedBox(
-            height: 304,
-            width: screenWidth(context),
-            child: PageView(
-              children: [
-                for (var row in [
-                  Colors.red,
-                  Colors.blue,
-                  Colors.green,
-                ])
-                  Container(
-                    color: row,
-                  ),
-              ],
-            ),
+          const Carousel(
+            images: [
+              Assets.carousel1,
+              Assets.carousel2,
+              Assets.carousel3,
+            ],
           ),
           verticalSpace(30),
           Padding(
@@ -111,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   label: "Login",
                   color: ColorAsset.violet,
                   onTap: () {
-                    nextScreen(const TemplatePage());
+                    nextScreen(const Template());
                   },
                 ),
                 verticalSpace(15),
