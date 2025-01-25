@@ -18,7 +18,7 @@ class BottomNavigation extends StatelessWidget {
         "label": "Utama",
       },
       {
-        "icon": Icons.wallet_rounded,
+        "icon": Icons.notifications_rounded,
         "label": "Transaksi",
       },
       {

@@ -12,12 +12,14 @@ class AppBarPrimary extends StatelessWidget {
     this.trailing,
     this.height,
     this.children = const [],
+    this.titleStyle,
+    this.subtitleStyle,
   });
   final String? title, subtitle;
   final Widget? trailing;
   final double? height;
   final List<Widget> children;
-
+  final TextStyle? titleStyle, subtitleStyle;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,20 +45,22 @@ class AppBarPrimary extends StatelessWidget {
                     if (title != null)
                       Text(
                         title ?? "",
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.bold,
-                          color: ColorAsset.black,
-                          fontSize: 16,
-                        ),
+                        style: titleStyle ??
+                            GoogleFonts.inter(
+                              fontWeight: FontWeight.bold,
+                              color: ColorAsset.black,
+                              fontSize: 16,
+                            ),
                       ),
                     if (subtitle != null)
                       Text(
                         subtitle ?? "",
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.bold,
-                          color: ColorAsset.violet,
-                          fontSize: 16,
-                        ),
+                        style: subtitleStyle ??
+                            GoogleFonts.inter(
+                              fontWeight: FontWeight.bold,
+                              color: ColorAsset.violet,
+                              fontSize: 16,
+                            ),
                       ),
                   ],
                 ),
