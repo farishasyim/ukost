@@ -71,7 +71,10 @@ class RoomPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 20),
+                    padding: const EdgeInsets.only(
+                      right: 20,
+                      bottom: 20,
+                    ),
                     child: FloatingActionButton(
                       onPressed: () {},
                       backgroundColor: ColorAsset.violet,
