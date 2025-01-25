@@ -37,7 +37,7 @@ class RoomCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Ink(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
                           "https://img.freepik.com/premium-photo/hotel-room-with-bed-window-with-view-city_865967-349517.jpg",

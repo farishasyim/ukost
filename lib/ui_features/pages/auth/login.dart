@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ukost/core/repositories/user_repositories.dart';
 import 'package:ukost/config/assets.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
@@ -19,8 +20,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController usernameController = TextEditingController(),
       passwordController = TextEditingController();
+  String emailDisplay = '';
+  String passwordDisplay = '';
 
   ValueNotifier<bool> isObs = ValueNotifier(false);
+  String errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -103,10 +107,31 @@ class _LoginPageState extends State<LoginPage> {
                   radius: 6,
                   label: "Login",
                   color: ColorAsset.violet,
-                  onTap: () {
-                    nextScreen(const Template());
+                  onTap: () async {
+                    var response = await UserRepositories.login(
+                        usernameController.text, passwordController.text);
+
+                    if (response['token'] != null) {
+                      setState(() {
+                        usernameController.clear();
+                        passwordController.clear();
+                      });
+                      nextScreen(const Template());
+                    } else {
+                      setState(() {
+                        passwordController.clear();
+                        errorMessage = response['message'];
+                      });
+                    }
                   },
                 ),
+                if (errorMessage.isNotEmpty) ...[
+                  verticalSpace(10),
+                  Text(
+                    errorMessage,
+                    style: TextStyle(color: Colors.red, fontSize: 14),
+                  ),
+                ],
                 verticalSpace(15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -224,9 +224,9 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Baris kedua (satu kolom)
-                Container(
+                SizedBox(
                   height: 125, // Tentukan tinggi kontainer
                   width: screenWidth(context),
                   child: ListView(
