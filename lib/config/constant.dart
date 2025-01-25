@@ -6,3 +6,5 @@ const String appname = "ukost";
 ValueNotifier<bool> loading = ValueNotifier(false);
 
 Storage storage = Storage();
+
+enum Role { customer, admin }
