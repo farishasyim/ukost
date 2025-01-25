@@ -14,9 +14,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Role role = Role.customer;
-
-    if (role == Role.customer) {
+    if (storage.account?.role == Role.customer) {
       return _customerView(context);
     }
 
@@ -59,10 +57,10 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const AppBarPrimary(
+          AppBarPrimary(
             height: null,
             title: "Selamat Datang,",
-            subtitle: "Admin",
+            subtitle: storage.account?.name ?? "",
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),

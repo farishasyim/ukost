@@ -96,7 +96,15 @@ class TextFieldPrimary extends StatelessWidget {
                     fontSize: 14,
                     color: focusColor ?? Colors.black,
                   ),
-              validator: validator,
+              validator: (e) {
+                if (e != null && e.isEmpty) {
+                  return "Kolom ${(label ?? '-').toLowerCase()} harus di isi";
+                }
+                if (validator != null) {
+                  return validator!(e);
+                }
+                return null;
+              },
               cursorColor: cursorColor ?? ColorAsset.violet,
               inputFormatters: [
                 if (isCurrency)

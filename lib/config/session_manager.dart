@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ukost/app/models/user/user.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/navigation_services.dart';
+import 'package:ukost/ui_features/layout/template.dart';
 import 'package:ukost/ui_features/pages/auth/login.dart';
 
 class SessionManager {
@@ -21,11 +22,12 @@ class SessionManager {
         account: User.fromJson(jsonDecode(account)),
         token: token,
       );
+      nextRemoveUntil(const Template());
     }
   }
 
-  static Future<void> setSession(User user) async {
-    await _pref.setString("account", user.toJson());
+  static Future<void> setSession() async {
+    await _pref.setString("account", storage.account!.toJson());
     await _pref.setString("token", storage.token!);
   }
 

@@ -20,6 +20,13 @@ class Log {
       if (exception.response?.statusCode == 401) {
         SessionManager.clearSession();
       }
+
+      if (exception.response != null) {
+        var message = exception.response?.data["message"];
+        if (message is String) {
+          Snackbar.error(message);
+        }
+      }
     } catch (e) {
       Log("ERROR => ${exception.message}");
       Snackbar.error("Terjadi kesalahan");

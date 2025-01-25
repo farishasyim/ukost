@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:ukost/config/storage.dart';
 
-const String appname = "ukost";
+const String appname = "UKOST";
+
+Dio dio = Dio();
 
 ValueNotifier<bool> loading = ValueNotifier(false);
 
