@@ -60,7 +60,9 @@ class _AdminFragmentState extends State<AdminFragment> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    init();
+    if (mounted) {
+      init();
+    }
   }
 
   @override

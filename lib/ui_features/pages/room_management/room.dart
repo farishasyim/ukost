@@ -27,7 +27,9 @@ class _RoomPageState extends State<RoomPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    init();
+    if (mounted) {
+      init();
+    }
   }
 
   @override
