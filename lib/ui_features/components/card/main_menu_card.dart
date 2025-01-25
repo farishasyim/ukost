@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ukost/config/color_assets.dart';
 
-class RoomCard extends StatelessWidget {
-  const RoomCard({
+class MenuUserCard extends StatelessWidget {
+  const MenuUserCard({
     super.key,
     this.title,
     this.subtitle,
-    this.path,
+    this.imagePath,
     this.onTap,
   });
-  final String? title, subtitle, path;
+  final String? title, subtitle, imagePath;
   final Function()? onTap;
 
   @override
@@ -25,7 +25,7 @@ class RoomCard extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(6),
           child: Container(
-            width: 230,
+            width: 165,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
@@ -39,8 +39,8 @@ class RoomCard extends StatelessWidget {
                   child: Ink(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(
-                          "https://img.freepik.com/premium-photo/hotel-room-with-bed-window-with-view-city_865967-349517.jpg",
+                        image: AssetImage(
+                          imagePath ?? 'assets/images/Image1.png',
                         ),
                         fit: BoxFit.cover,
                       ),

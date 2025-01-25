@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/ui_features/components/bottom/bottom_navigation.dart';
-import 'package:ukost/ui_features/pages/home/home.dart';
-import 'package:ukost/ui_features/pages/profile/profile.dart';
-import 'package:ukost/ui_features/pages/room_management/room.dart';
-import 'package:ukost/ui_features/pages/user_management/user.dart';
+import 'package:ukost/user/pages/home/home.dart';
+import 'package:ukost/user/pages/profile/profile.dart';
+import 'package:ukost/user/pages/room_management/room.dart';
+import 'package:ukost/user/pages/user_management/user.dart';
 
 class Template extends StatefulWidget {
   const Template({super.key});
