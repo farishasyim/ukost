@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ukost/app/repositories/auth/auth_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/dialog.dart';
+import 'package:ukost/config/navigation_services.dart';
+import 'package:ukost/config/session_manager.dart';
 import 'package:ukost/ui_features/components/buttons/profile_button.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -14,14 +18,19 @@ class ProfilePage extends StatelessWidget {
         "icon": Icons.person,
         "label": "Ubah profil",
       },
-      {
-        "icon": Icons.report,
-        "label": "Komplain",
-      },
+      {"icon": Icons.report, "label": "Komplain", "click": () {}},
       {
         "icon": Icons.logout,
         "label": "Keluar",
         "color": ColorAsset.red,
+        "click": () async {
+          Modals().loading();
+          var res = await AuthRepository.logout();
+          backScreen();
+          if (res) {
+            SessionManager.clearSession();
+          }
+        }
       },
     ];
     return SingleChildScrollView(
@@ -60,7 +69,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ),
                         dense: true,
-                        onTap: () {},
+                        onTap: row['click'],
                         leading: Icon(
                           row["icon"],
                           color: row["color"] ??

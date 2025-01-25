@@ -17,7 +17,8 @@ class ExpanseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      width: 250,
       padding: const EdgeInsets.only(right: 20),
       child: Material(
         color: Colors.transparent,
@@ -34,7 +35,7 @@ class ExpanseCard extends StatelessWidget {
               ),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
@@ -56,6 +57,7 @@ class ExpanseCard extends StatelessWidget {
                         fontSize: 14,
                         color: ColorAsset.violet,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       subtitle.length > 20
@@ -66,6 +68,7 @@ class ExpanseCard extends StatelessWidget {
                         color: ColorAsset.black.withOpacity(0.4),
                         fontWeight: FontWeight.normal,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

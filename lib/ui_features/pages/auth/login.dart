@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ukost/app/repositories/user/user_repository.dart';
+import 'package:ukost/app/repositories/auth/auth_repository.dart';
 import 'package:ukost/config/assets.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constant.dart';
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
                               loading.value = true;
-                              var res = await UserRepository.login(
+                              var res = await AuthRepository.login(
                                 emailController.text,
                                 passwordController.text,
                               );

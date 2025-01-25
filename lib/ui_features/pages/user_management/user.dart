@@ -65,9 +65,9 @@ class UserPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(
                       right: 20,
-                      bottom: 20,
                     ),
                     child: FloatingActionButton(
+                      heroTag: "user",
                       onPressed: () {},
                       backgroundColor: ColorAsset.violet,
                       child: Icon(

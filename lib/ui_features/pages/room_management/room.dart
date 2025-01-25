@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ukost/app/models/category/category.dart';
+import 'package:ukost/app/repositories/category/category_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/ui_features/components/appbar/appbar_primary.dart';
@@ -6,8 +8,27 @@ import 'package:ukost/ui_features/components/buttons/button_add.dart';
 import 'package:ukost/ui_features/components/card/room_card.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
 
-class RoomPage extends StatelessWidget {
+class RoomPage extends StatefulWidget {
   const RoomPage({super.key});
+
+  @override
+  State<RoomPage> createState() => _RoomPageState();
+}
+
+class _RoomPageState extends State<RoomPage> {
+  List<Category> categories = [];
+
+  void init() async {
+    categories = await CategoryRepository.getCategory();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    init();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +44,11 @@ class RoomPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   verticalSpace(60),
-                  for (var i = 1; i < 5; i++)
+                  for (var category in categories)
                     Column(
                       children: [
                         HorizontalText(
-                          title: "Tipe Kamar $i",
+                          title: category.name,
                           trailing: "Detil",
                           onTap: () {},
                         ),
@@ -40,10 +61,10 @@ class RoomPage extends StatelessWidget {
                             padding:
                                 const EdgeInsets.only(left: 20, bottom: 20),
                             children: [
-                              for (var i = 1; i < 5; i++)
+                              for (var room in category.rooms)
                                 RoomCard(
                                   onTap: () {},
-                                  title: "Kamar $i",
+                                  title: room.name,
                                   subtitle: "Tersedia",
                                 ),
                               ButtonAdd(
@@ -73,9 +94,9 @@ class RoomPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(
                       right: 20,
-                      bottom: 20,
                     ),
                     child: FloatingActionButton(
+                      heroTag: "room",
                       onPressed: () {},
                       backgroundColor: ColorAsset.violet,
                       child: Icon(
