@@ -3,10 +3,12 @@ import 'package:ukost/app/models/category/category.dart';
 import 'package:ukost/app/repositories/category/category_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/components/appbar/appbar_primary.dart';
 import 'package:ukost/ui_features/components/buttons/button_add.dart';
 import 'package:ukost/ui_features/components/card/room_card.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
+import 'package:ukost/ui_features/pages/room_management/form.dart';
 
 class RoomPage extends StatefulWidget {
   const RoomPage({super.key});
@@ -99,7 +101,15 @@ class _RoomPageState extends State<RoomPage> {
                     ),
                     child: FloatingActionButton(
                       heroTag: "room",
-                      onPressed: () {},
+                      onPressed: () {
+                        nextScreen(
+                          CategoryFormPage(
+                            onSuccess: () async {
+                              init();
+                            },
+                          ),
+                        );
+                      },
                       backgroundColor: ColorAsset.violet,
                       child: Icon(
                         Icons.add_rounded,

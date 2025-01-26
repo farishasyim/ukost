@@ -168,6 +168,7 @@ class TextFieldPrimary extends StatelessWidget {
               ),
             ),
           ),
+          verticalSpace(10),
         ],
       ),
     );

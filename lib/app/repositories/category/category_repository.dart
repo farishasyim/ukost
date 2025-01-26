@@ -22,4 +22,21 @@ class CategoryRepository {
     }
     return [];
   }
+
+  static Future<bool> storeCategory(Map<String, dynamic> request) async {
+    try {
+      var res = await dio.post(
+        Routes.storeCategory,
+        data: FormData.fromMap(request),
+        options: Header.init(isMultipart: true),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
 }

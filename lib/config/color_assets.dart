@@ -10,5 +10,5 @@ class ColorAsset {
 
   static Color red = const Color.fromRGBO(165, 59, 60, 1);
 
-  static Color success = const Color.fromARGB(255, 130, 236, 38);
+  static Color success = const Color.fromARGB(255, 95, 191, 11);
 }
