@@ -25,6 +25,12 @@ class ProfileButton extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: ColorAsset.violet,
+                image: path != null
+                    ? DecorationImage(
+                        image: NetworkImage(path!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
               ),
             ),
           ),

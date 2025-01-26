@@ -125,6 +125,7 @@ class _AdminFragmentState extends State<AdminFragment> {
                     onTap: () {},
                     title: row.name ?? "-",
                     subtitle: row.price?.toCurrency(),
+                    path: row.imageLink,
                   ),
               ],
             ),

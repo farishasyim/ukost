@@ -4,14 +4,23 @@ import 'package:ukost/config/constant.dart';
 
 class User {
   int? id, identityNumber;
-  String? name, email, identityCard, profilePicture, gender, phone;
+  String? name,
+      email,
+      identityCard,
+      profilePicture,
+      gender,
+      phone,
+      profileLink,
+      identityCardLink;
   DateTime? dateOfBirth;
   Role? role;
 
   User({
     this.id,
     this.role,
+    this.identityCardLink,
     this.dateOfBirth,
+    this.profileLink,
     this.email,
     this.gender,
     this.identityCard,
@@ -24,6 +33,8 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         name: json["name"],
+        profileLink: json["profile_link"],
+        identityCardLink: json["identity_card_link"],
         email: json["email"],
         phone: json["phone"],
         role: json["role"] == "admin" ? Role.admin : Role.customer,

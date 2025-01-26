@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ukost/app/models/category/category.dart';
+import 'package:ukost/app/repositories/category/category_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/dialog.dart';
+import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/config/number_extension.dart';
+import 'package:ukost/ui_features/pages/room_management/form_category.dart';
 
 class DetailCategoryPage extends StatefulWidget {
   const DetailCategoryPage({super.key, required this.category});
@@ -13,6 +17,15 @@ class DetailCategoryPage extends StatefulWidget {
 }
 
 class _DetailCategoryPageState extends State<DetailCategoryPage> {
+  late Category category;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    category = widget.category;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +40,25 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
+                  onTap: () {
+                    nextScreen(
+                      FormCategoryPage(
+                        category: category,
+                        onSuccess: () async {
+                          Modals().loading();
+                          var res = await CategoryRepository.show(category.id!);
+                          backScreen();
+                          if (res != null) {
+                            setState(() {
+                              category = res;
+                            });
+                          } else {
+                            backScreen();
+                          }
+                        },
+                      ),
+                    );
+                  },
                   child: Text(
                     "Ubah",
                     style: GoogleFonts.inter(
@@ -36,6 +68,19 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
                   ),
                 ),
                 PopupMenuItem(
+                  onTap: () {
+                    Modals(context).confirmation(
+                      onTap: () async {
+                        Modals().loading();
+                        var res = await CategoryRepository.deleteCategory(
+                            category.id!);
+                        backScreen();
+                        if (res) {
+                          backScreen();
+                        }
+                      },
+                    );
+                  },
                   child: Text(
                     "Hapus",
                     style: GoogleFonts.inter(
@@ -53,7 +98,7 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
       body: ListView(
         children: [
           Image.network(
-            widget.category.imageLink!,
+            category.imageLink!,
             height: 250,
             width: screenWidth(context),
             fit: BoxFit.cover,
@@ -65,7 +110,7 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.category.name ?? "",
+                  category.name ?? "",
                   style: GoogleFonts.inter(
                     color: ColorAsset.violet,
                     fontWeight: FontWeight.bold,
@@ -73,7 +118,7 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
                   ),
                 ),
                 Text(
-                  (widget.category.price ?? 0).toCurrency(),
+                  (category.price ?? 0).toCurrency(),
                   style: GoogleFonts.inter(
                     color: ColorAsset.black,
                     fontWeight: FontWeight.bold,
@@ -82,7 +127,7 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
                 ),
                 verticalSpace(5),
                 Text(
-                  widget.category.description ?? "",
+                  category.description ?? "",
                   style: GoogleFonts.inter(
                     color: ColorAsset.black,
                     fontSize: 12,
@@ -92,7 +137,7 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
                   color: ColorAsset.black.withOpacity(0.2),
                 ),
                 Text(
-                  "Jumlah Kamar: ${widget.category.rooms.length}",
+                  "Jumlah Kamar: ${category.rooms.length}",
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.w500,
                     color: ColorAsset.black,
@@ -100,7 +145,7 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
                   ),
                 ),
                 verticalSpace(10),
-                for (var row in widget.category.rooms)
+                for (var row in category.rooms)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: ListTile(

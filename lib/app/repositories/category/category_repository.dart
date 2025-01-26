@@ -23,12 +23,64 @@ class CategoryRepository {
     return [];
   }
 
+  static Future<Category?> show(int id) async {
+    try {
+      var res = await dio.get(
+        "${Routes.category}/$id",
+        options: Header.init(),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return Category.fromJson(res.data["data"]);
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return null;
+  }
+
   static Future<bool> storeCategory(Map<String, dynamic> request) async {
     try {
       var res = await dio.post(
         Routes.storeCategory,
         data: FormData.fromMap(request),
         options: Header.init(isMultipart: true),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
+
+  static Future<bool> updateCategory(
+    int id,
+    Map<String, dynamic> request,
+  ) async {
+    try {
+      var res = await dio.post(
+        "${Routes.category}/$id",
+        data: FormData.fromMap(request),
+        options: Header.init(isMultipart: true),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
+
+  static Future<bool> deleteCategory(int id) async {
+    try {
+      var res = await dio.delete(
+        "${Routes.category}/$id",
+        options: Header.init(),
       );
       if (res.statusCode == 200) {
         Log.message(res);

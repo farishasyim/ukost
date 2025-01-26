@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:ukost/app/models/category/category.dart';
 import 'package:ukost/app/repositories/category/category_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constant.dart';
@@ -13,8 +14,13 @@ import 'package:ukost/ui_features/components/buttons/primary_button.dart';
 import 'package:ukost/ui_features/components/inputs/textfield_primary.dart';
 
 class FormCategoryPage extends StatefulWidget {
-  const FormCategoryPage({super.key, this.onSuccess});
+  const FormCategoryPage({
+    super.key,
+    this.category,
+    this.onSuccess,
+  });
   final Function()? onSuccess;
+  final Category? category;
 
   @override
   State<FormCategoryPage> createState() => _FormCategoryPageState();
@@ -26,6 +32,18 @@ class _FormCategoryPageState extends State<FormCategoryPage> {
       priceController = TextEditingController(),
       descriptionController = TextEditingController(),
       totalRoomController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.category != null) {
+      nameController.text = widget.category?.name ?? "";
+      priceController.text = (widget.category?.price ?? 0).toString();
+      descriptionController.text = widget.category?.description ?? "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -58,17 +76,19 @@ class _FormCategoryPageState extends State<FormCategoryPage> {
               hintText: "Tambahkan deskripsi",
               maxLines: 3,
             ),
-            TextFieldPrimary(
-              controller: totalRoomController,
-              label: "Jumlah kamar",
-              hintText: "Tambahkan jumlah kamar",
-              keyboardType: TextInputType.number,
-            ),
+            if (widget.category == null)
+              TextFieldPrimary(
+                controller: totalRoomController,
+                label: "Jumlah kamar",
+                hintText: "Tambahkan jumlah kamar",
+                keyboardType: TextInputType.number,
+              ),
             Divider(
               color: ColorAsset.black.withOpacity(0.2),
             ),
             verticalSpace(10),
             MultimediaButton(
+              path: widget.category?.imageLink,
               onTap: (e) {
                 file = e;
               },
@@ -86,6 +106,7 @@ class _FormCategoryPageState extends State<FormCategoryPage> {
                   onTap: () {
                     Modals().confirmation(
                       onTap: () async {
+                        bool res = false;
                         FocusScope.of(context).unfocus();
                         loading.value = true;
                         Map<String, dynamic> request = {
@@ -98,8 +119,12 @@ class _FormCategoryPageState extends State<FormCategoryPage> {
                           request["photo"] =
                               await MultipartFile.fromFile(file!.path);
                         }
-                        var res =
-                            await CategoryRepository.storeCategory(request);
+                        if (widget.category != null) {
+                          res = await CategoryRepository.updateCategory(
+                              widget.category!.id!, request);
+                        } else {
+                          res = await CategoryRepository.storeCategory(request);
+                        }
                         loading.value = false;
                         if (res) {
                           backScreen();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ukost/app/repositories/auth/auth_repository.dart';
 import 'package:ukost/config/color_assets.dart';
+import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/navigation_services.dart';
@@ -40,7 +41,9 @@ class ProfilePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             verticalSpace(20),
-            const ProfileButton(),
+            ProfileButton(
+              path: storage.account?.profileLink,
+            ),
             verticalSpace(10),
             Text(
               "Faris Hasyim",
