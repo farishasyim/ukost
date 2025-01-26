@@ -1,5 +1,5 @@
 class Routes {
-  static const String development = "https://ukost.farishasyim.my.id";
+  static const String development = "http://192.168.100.14:8000";
 
   static const String endpoint = development;
 

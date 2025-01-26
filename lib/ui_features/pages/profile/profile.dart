@@ -40,9 +40,7 @@ class ProfilePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             verticalSpace(20),
-            ProfileButton(
-              onTap: () {},
-            ),
+            const ProfileButton(),
             verticalSpace(10),
             Text(
               "Faris Hasyim",

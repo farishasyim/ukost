@@ -6,6 +6,7 @@ import 'package:ukost/app/repositories/category/category_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/components/buttons/multimedia_button.dart';
 import 'package:ukost/ui_features/components/buttons/primary_button.dart';
@@ -82,27 +83,32 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
                 return PrimaryButton(
                   loading: loading.value,
                   radius: 8,
-                  onTap: () async {
-                    FocusScope.of(context).unfocus();
-                    loading.value = true;
-                    Map<String, dynamic> request = {
-                      "name": nameController.text,
-                      "price": priceController.text,
-                      "description": descriptionController.text,
-                      "total_rooms": totalRoomController.text,
-                    };
-                    if (file != null) {
-                      request["photo"] =
-                          await MultipartFile.fromFile(file!.path);
-                    }
-                    var res = await CategoryRepository.storeCategory(request);
-                    loading.value = false;
-                    if (res) {
-                      backScreen();
-                      if (widget.onSuccess != null) {
-                        widget.onSuccess!();
-                      }
-                    }
+                  onTap: () {
+                    Modals().confirmation(
+                      onTap: () async {
+                        FocusScope.of(context).unfocus();
+                        loading.value = true;
+                        Map<String, dynamic> request = {
+                          "name": nameController.text,
+                          "price": priceController.text,
+                          "description": descriptionController.text,
+                          "total_rooms": totalRoomController.text,
+                        };
+                        if (file != null) {
+                          request["photo"] =
+                              await MultipartFile.fromFile(file!.path);
+                        }
+                        var res =
+                            await CategoryRepository.storeCategory(request);
+                        loading.value = false;
+                        if (res) {
+                          backScreen();
+                          if (widget.onSuccess != null) {
+                            widget.onSuccess!();
+                          }
+                        }
+                      },
+                    );
                   },
                   color: ColorAsset.success,
                   label: "Kirim",
