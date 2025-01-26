@@ -12,15 +12,15 @@ import 'package:ukost/ui_features/components/buttons/multimedia_button.dart';
 import 'package:ukost/ui_features/components/buttons/primary_button.dart';
 import 'package:ukost/ui_features/components/inputs/textfield_primary.dart';
 
-class CategoryFormPage extends StatefulWidget {
-  const CategoryFormPage({super.key, this.onSuccess});
+class FormCategoryPage extends StatefulWidget {
+  const FormCategoryPage({super.key, this.onSuccess});
   final Function()? onSuccess;
 
   @override
-  State<CategoryFormPage> createState() => _CategoryFormPageState();
+  State<FormCategoryPage> createState() => _FormCategoryPageState();
 }
 
-class _CategoryFormPageState extends State<CategoryFormPage> {
+class _FormCategoryPageState extends State<FormCategoryPage> {
   File? file;
   TextEditingController nameController = TextEditingController(),
       priceController = TextEditingController(),

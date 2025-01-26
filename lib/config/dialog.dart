@@ -95,4 +95,54 @@ class Modals {
       },
     );
   }
+
+  void action({
+    Function()? onDelete,
+    Function()? onEdit,
+  }) {
+    showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+        context: context ?? navigatorKey.currentContext!,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                onTap: () {
+                  backScreen();
+                  if (onEdit != null) {
+                    onEdit();
+                  }
+                },
+                title: Text(
+                  "Ubah",
+                  style: GoogleFonts.inter(),
+                ),
+                trailing: Icon(
+                  Icons.edit,
+                  color: ColorAsset.success,
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  backScreen();
+                  if (onDelete != null) {
+                    onDelete();
+                  }
+                },
+                title: Text(
+                  "Hapus",
+                  style: GoogleFonts.inter(),
+                ),
+                trailing: Icon(
+                  Icons.delete,
+                  color: ColorAsset.red,
+                ),
+              ),
+            ],
+          );
+        });
+  }
 }

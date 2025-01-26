@@ -13,6 +13,7 @@ class Routes {
 
   // -------------- ROOM MANAGEMENT -----------------
   static const String roomManagement = "$api/room-management";
+  static const String storeRoom = "$roomManagement/store";
   static const String category = "$roomManagement/category";
   static const String storeCategory = "$category/store";
 }

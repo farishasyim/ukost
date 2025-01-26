@@ -2,20 +2,20 @@ import 'package:dio/dio.dart';
 import 'package:ukost/config/constant.dart';
 
 class Header {
-  static final Map<String, dynamic> _head = {
-    'Accept': 'application/json',
-  };
   static Options init({
     bool isMultipart = false,
   }) {
+    Map<String, dynamic> head = {
+      'Accept': 'application/json',
+    };
     if (isMultipart) {
-      _head["Content-Type"] = "multipart/form-data";
+      head["Content-Type"] = "multipart/form-data";
     }
     if (storage.token != null) {
-      _head["Authorization"] = "Bearer ${storage.token}";
+      head["Authorization"] = "Bearer ${storage.token}";
     }
     return Options(
-      headers: _head,
+      headers: head,
     );
   }
 }

@@ -7,11 +7,12 @@ class RoomCard extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
+    this.onLongPress,
     this.path,
     this.onTap,
   });
   final String? title, subtitle, path;
-  final Function()? onTap;
+  final Function()? onTap, onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class RoomCard extends StatelessWidget {
         color: Colors.transparent,
         clipBehavior: Clip.hardEdge,
         child: InkWell(
+          onLongPress: onLongPress,
           onTap: onTap,
           borderRadius: BorderRadius.circular(6),
           child: Container(
