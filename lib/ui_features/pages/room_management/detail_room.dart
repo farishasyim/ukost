@@ -49,7 +49,6 @@ class _DetailRoomPageState extends State<DetailRoomPage> {
                   if (room.pivot != null) {
                     e["customer_id"] = room.pivot?.customerId;
                   }
-                  print(e);
                   Modals().loading();
                   var res = await RoomRepository.pivotRoom(e);
                   backScreen();
@@ -162,30 +161,6 @@ class _DetailRoomPageState extends State<DetailRoomPage> {
                             ),
                             style: GoogleFonts.inter(
                               color: ColorAsset.success,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Keluar",
-                            style: GoogleFonts.inter(
-                              color: ColorAsset.black,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            room.pivot?.leftAt != null
-                                ? DateFormatter.date(
-                                    room.pivot?.createdAt,
-                                    "dd/MM/yy",
-                                  )
-                                : "-",
-                            style: GoogleFonts.inter(
-                              color: ColorAsset.red,
                               fontSize: 12,
                             ),
                           ),

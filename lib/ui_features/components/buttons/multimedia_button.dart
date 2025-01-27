@@ -13,10 +13,11 @@ class MultimediaButton extends StatefulWidget {
     required this.onTap,
     required this.onCancel,
     this.path,
+    this.title,
   });
   final Function(File) onTap;
   final Function() onCancel;
-  final String? path;
+  final String? path, title;
 
   @override
   State<MultimediaButton> createState() => _MultimediaButtonState();
@@ -98,7 +99,7 @@ class _MultimediaButtonState extends State<MultimediaButton> {
                 ),
                 verticalSpace(10),
                 Text(
-                  "Tambahkan Foto Kamar",
+                  widget.title ?? "Tambahkan Foto Kamar",
                   style: GoogleFonts.inter(
                     color: ColorAsset.black.withOpacity(0.4),
                   ),

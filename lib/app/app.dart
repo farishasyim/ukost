@@ -13,6 +13,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: appname,
       theme: ThemeData(
+        scaffoldBackgroundColor: ColorAsset.white,
         appBarTheme: AppBarTheme(
           titleTextStyle: GoogleFonts.inter(
             fontSize: 16,

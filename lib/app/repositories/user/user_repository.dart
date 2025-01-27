@@ -27,4 +27,24 @@ class UserRepository {
     }
     return [];
   }
+
+  static Future<User?> update(
+    int? id,
+    Map<String, dynamic> request,
+  ) async {
+    try {
+      var res = await dio.post(
+        "${Routes.userManagement}/$id",
+        data: FormData.fromMap(request),
+        options: Header.init(isMultipart: true),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return User.fromJson(res.data["data"]);
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return null;
+  }
 }
