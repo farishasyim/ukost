@@ -11,3 +11,5 @@ ValueNotifier<bool> loading = ValueNotifier(false);
 Storage storage = Storage();
 
 enum Role { customer, admin }
+
+enum UserStatus { available, unavailable, all }

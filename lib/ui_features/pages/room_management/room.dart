@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ukost/app/models/category/category.dart';
 import 'package:ukost/app/repositories/category/category_repository.dart';
+import 'package:ukost/app/repositories/room/room_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/dialog.dart';
@@ -10,6 +11,7 @@ import 'package:ukost/ui_features/components/buttons/button_add.dart';
 import 'package:ukost/ui_features/components/card/room_card.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
 import 'package:ukost/ui_features/pages/room_management/detail_category.dart';
+import 'package:ukost/ui_features/pages/room_management/detail_room.dart';
 import 'package:ukost/ui_features/pages/room_management/form_category.dart';
 import 'package:ukost/ui_features/pages/room_management/form_room.dart';
 
@@ -30,7 +32,6 @@ class _RoomPageState extends State<RoomPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (mounted) {
       init();
@@ -64,10 +65,16 @@ class _RoomPageState extends State<RoomPage> {
                           HorizontalText(
                             title: category.name,
                             trailing: "Detil",
-                            onTap: () {
-                              nextScreen(DetailCategoryPage(
-                                category: category,
-                              ));
+                            onTap: () async {
+                              Modals().loading();
+                              var res =
+                                  await CategoryRepository.show(category.id!);
+                              backScreen();
+                              if (res != null) {
+                                nextScreen(DetailCategoryPage(
+                                  category: res,
+                                ));
+                              }
                             },
                           ),
                           verticalSpace(10),
@@ -82,6 +89,19 @@ class _RoomPageState extends State<RoomPage> {
                                 for (var room in category.rooms)
                                   RoomCard(
                                     path: category.imageLink,
+                                    onTap: () async {
+                                      Modals().loading();
+                                      var res =
+                                          await RoomRepository.show(room.id!);
+                                      backScreen();
+                                      if (res != null) {
+                                        nextScreen(
+                                          DetailRoomPage(
+                                            room: res,
+                                          ),
+                                        );
+                                      }
+                                    },
                                     onLongPress: () {
                                       Modals(context).action(
                                         onDelete: () {},
@@ -96,7 +116,9 @@ class _RoomPageState extends State<RoomPage> {
                                       );
                                     },
                                     title: room.name,
-                                    subtitle: "Tersedia",
+                                    subtitle: room.pivot != null
+                                        ? "Tidak Tersedia"
+                                        : "Tersedia",
                                   ),
                                 ButtonAdd(
                                   onTap: () {

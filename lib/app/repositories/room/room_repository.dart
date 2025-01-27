@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ukost/app/models/room/room.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/header.dart';
 import 'package:ukost/config/log.dart';
@@ -20,5 +21,38 @@ class RoomRepository {
       Log.error(e);
     }
     return false;
+  }
+
+  static Future<bool> pivotRoom(Map<String, dynamic> request) async {
+    try {
+      var res = await dio.post(
+        Routes.pivotRoom,
+        data: request,
+        options: Header.init(),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
+
+  static Future<Room?> show(int id) async {
+    try {
+      var res = await dio.get(
+        "${Routes.roomManagement}/$id",
+        options: Header.init(),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return Room.fromJson(res.data['data']);
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return null;
   }
 }

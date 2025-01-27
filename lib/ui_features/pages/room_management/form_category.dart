@@ -35,7 +35,6 @@ class _FormCategoryPageState extends State<FormCategoryPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (widget.category != null) {
       nameController.text = widget.category?.name ?? "";

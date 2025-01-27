@@ -21,7 +21,6 @@ class _CarouselState extends State<Carousel> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     controller.dispose();
   }

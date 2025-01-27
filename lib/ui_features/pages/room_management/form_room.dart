@@ -33,7 +33,6 @@ class _FormRoomPageState extends State<FormRoomPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     nameController.text = widget.room?.name ?? '';
   }
@@ -74,7 +73,6 @@ class _FormRoomPageState extends State<FormRoomPage> {
                           "name": nameController.text,
                           "category_id": widget.category.id,
                         };
-                        print(request);
                         var res = await RoomRepository.storeRoom(request);
                         loading.value = false;
                         if (res) {

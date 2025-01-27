@@ -5,11 +5,14 @@ import 'package:ukost/app/repositories/category/category_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/dialog.dart';
+import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/config/number_extension.dart';
 import 'package:ukost/ui_features/components/appbar/appbar_primary.dart';
 import 'package:ukost/ui_features/components/card/expanse_card.dart';
 import 'package:ukost/ui_features/components/card/room_card.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
+import 'package:ukost/ui_features/pages/room_management/detail_category.dart';
 
 class AdminFragment extends StatefulWidget {
   const AdminFragment({super.key});
@@ -58,7 +61,6 @@ class _AdminFragmentState extends State<AdminFragment> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (mounted) {
       init();
@@ -122,7 +124,16 @@ class _AdminFragmentState extends State<AdminFragment> {
               children: [
                 for (var row in categories)
                   RoomCard(
-                    onTap: () {},
+                    onTap: () async {
+                      Modals().loading();
+                      var res = await CategoryRepository.show(row.id!);
+                      backScreen();
+                      if (res != null) {
+                        nextScreen(DetailCategoryPage(
+                          category: res,
+                        ));
+                      }
+                    },
                     title: row.name ?? "-",
                     subtitle: row.price?.toCurrency(),
                     path: row.imageLink,
