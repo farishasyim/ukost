@@ -2,9 +2,9 @@ class Routes {
   static const String development = "http://192.168.100.14:8000";
   static const String production = "https://ukost.farishasyim.my.id";
 
-  static const String endpoint = development;
+  static const String endpoint = production;
 
-  static const String api = "$development/api";
+  static const String api = "$endpoint/api";
 
   // --------- Routes -----------
 
