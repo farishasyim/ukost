@@ -31,7 +31,7 @@ class UserRepository {
   static Future<User?> add(Map<String, dynamic> formData) async {
     try {
       var res = await dio.post(
-        Routes.userManagement,
+        "${Routes.userManagement}/store",
         data: FormData.fromMap(formData),
         options: Header.init(isMultipart: true),
       );
@@ -50,7 +50,7 @@ class UserRepository {
     Map<String, dynamic> request,
   ) async {
     try {
-      var res = await dio.put(
+      var res = await dio.post(
         "${Routes.userManagement}/$id",
         data: FormData.fromMap(request),
         options: Header.init(isMultipart: true),

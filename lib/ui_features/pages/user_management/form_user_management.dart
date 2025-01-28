@@ -2,22 +2,22 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:ukost/app/models/user/user.dart';
 import 'package:ukost/app/repositories/user/user_repository.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/date_picker.dart';
 import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/file_picker.dart';
 import 'package:ukost/config/format_date.dart';
+import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/components/forms/form_user.dart';
 
 class FormUserManagement extends StatefulWidget {
-  final bool isEditMode;
-  final Map<String, dynamic>? existingData;
+  final User? user;
 
   const FormUserManagement({
     super.key,
-    this.isEditMode = false,
-    this.existingData,
+    this.user,
   });
 
   @override
@@ -29,8 +29,6 @@ class _FormUserManagement extends State<FormUserManagement> {
       emailController = TextEditingController(),
       phoneController = TextEditingController(),
       dobController = TextEditingController(),
-      passwordController = TextEditingController(),
-      roleController = TextEditingController(),
       identityNumberController = TextEditingController();
 
   String? gender;
@@ -40,114 +38,115 @@ class _FormUserManagement extends State<FormUserManagement> {
   @override
   void initState() {
     super.initState();
-    if (widget.isEditMode && widget.existingData != null) {
-      nameController.text = widget.existingData?['name'] ?? '';
-      emailController.text = widget.existingData?['email'] ?? '';
-      phoneController.text = widget.existingData?['phone'] ?? '';
-      dobController.text = widget.existingData?['date_of_birth'] ?? '';
-      gender = widget.existingData?['gender'];
-      roleController.text = widget.existingData?['role'] ?? '';
+    if (widget.user != null) {
+      nameController.text = widget.user?.name ?? '';
+      emailController.text = widget.user?.email ?? '';
+      phoneController.text = widget.user?.phone ?? '';
+      dobController.text = widget.user?.dateOfBirth != null
+          ? DateFormatter.date(widget.user?.dateOfBirth, "yyyy-MM-dd")
+          : "";
+      gender = widget.user?.gender;
       identityNumberController.text =
-          widget.existingData?['identity_number'] ?? '';
+          (widget.user?.identityNumber ?? "").toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.isEditMode ? "Edit Pengguna" : "Tambah Pengguna"),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: FormUser(
-          path: widget.existingData?['profile_picture_path'],
-          profilePicture: profilePicture,
-          gender: gender,
-          dobController: dobController,
-          emailController: emailController,
-          nameController: nameController,
-          phoneController: phoneController,
-          identityNumberController: identityNumberController,
-          onChangeGender: (selectedGender) {
-            setState(() {
-              gender = selectedGender;
-            });
-          },
-          onChangeDate: () async {
-            var selectedDate = await DatePicker.getDatePicker(
-              dobController.text.isNotEmpty ? dobController.text : null,
-              lastDate: 1940,
-            );
-            if (selectedDate != null) {
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title:
+              Text(widget.user != null ? "Edit Pengguna" : "Tambah Pengguna"),
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: FormUser(
+            path: widget.user?.profileLink,
+            profilePicture: profilePicture,
+            gender: gender,
+            dobController: dobController,
+            emailController: emailController,
+            nameController: nameController,
+            phoneController: phoneController,
+            identityNumberController: identityNumberController,
+            onChangeGender: (selectedGender) {
               setState(() {
-                dobController.text =
-                    DateFormatter.date(selectedDate, "yyyy-MM-dd");
+                gender = selectedGender;
               });
-            }
-          },
-          onProfilePicture: () async {
-            var pickedFile =
-                await FilePickerHelper.pickFile(fileType: FileType.image);
-            if (pickedFile.isNotEmpty) {
+            },
+            onChangeDate: () async {
+              var selectedDate = await DatePicker.getDatePicker(
+                dobController.text.isNotEmpty ? dobController.text : null,
+                lastDate: 1940,
+              );
+              if (selectedDate != null) {
+                setState(() {
+                  dobController.text =
+                      DateFormatter.date(selectedDate, "yyyy-MM-dd");
+                });
+              }
+            },
+            onProfilePicture: () async {
+              var pickedFile =
+                  await FilePickerHelper.pickFile(fileType: FileType.image);
+              if (pickedFile.isNotEmpty) {
+                setState(() {
+                  profilePicture = pickedFile.first;
+                });
+              }
+            },
+            onAttachIdentity: (file) {
               setState(() {
-                profilePicture = pickedFile.first;
+                identityCard = file;
               });
-            }
-          },
-          onAttachIdentity: (file) {
-            setState(() {
-              identityCard = file;
-            });
-          },
-          onCancelAttach: () {
-            setState(() {
-              identityCard = null;
-            });
-          },
-          onSubmit: (formData) {
-            Modals().confirmation(
-              title: widget.isEditMode
-                  ? "Simpan Perubahan?"
-                  : "Tambahkan Pengguna?",
-              onTap: () async {
-                loading.value = true;
+            },
+            onCancelAttach: () {
+              setState(() {
+                identityCard = null;
+              });
+            },
+            onSubmit: (formData) {
+              Modals().confirmation(
+                title: widget.user != null
+                    ? "Simpan Perubahan?"
+                    : "Tambahkan Pengguna?",
+                onTap: () async {
+                  loading.value = true;
 
-                if (profilePicture != null) {
-                  formData["profile_picture"] =
-                      await MultipartFile.fromFile(profilePicture!.path);
-                }
-                if (identityCard != null) {
-                  formData["identity_card"] =
-                      await MultipartFile.fromFile(identityCard!.path);
-                }
-
-                formData["password"] = passwordController.text;
-                formData["role"] = roleController.text;
-                formData["identity_number"] = identityNumberController.text;
-
-                dynamic response;
-
-                if (widget.isEditMode) {
-                  response = await UserRepository.update(
-                    widget.existingData?['id'],
-                    formData,
-                  );
-                } else {
-                  response = await UserRepository.add(formData);
-                }
-
-                loading.value = false;
-
-                if (response != null) {
-                  if (widget.isEditMode) {
-                    storage.copyWith(account: response);
+                  if (profilePicture != null) {
+                    formData["profile_picture"] =
+                        await MultipartFile.fromFile(profilePicture!.path);
                   }
-                  Navigator.pop(context, response);
-                }
-              },
-            );
-          },
+                  if (identityCard != null) {
+                    formData["identity_card"] =
+                        await MultipartFile.fromFile(identityCard!.path);
+                  }
+                  formData["identity_number"] = identityNumberController.text;
+
+                  User? user;
+
+                  if (widget.user != null) {
+                    user = await UserRepository.update(
+                      widget.user?.id,
+                      formData,
+                    );
+                  } else {
+                    user = await UserRepository.add(formData);
+                  }
+
+                  loading.value = false;
+
+                  if (user != null) {
+                    backScreen();
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
     );

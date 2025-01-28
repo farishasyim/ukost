@@ -9,21 +9,23 @@ class UserCard extends StatelessWidget {
     this.title,
     this.subtitle,
     this.padding,
+    this.path,
+    this.onTap,
   });
-  final String? title, subtitle;
+  final String? title, subtitle, path;
   final bool active;
   final EdgeInsetsGeometry? padding;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: padding ??
           const EdgeInsets.only(
-            left: 20,
-            right: 20,
-            bottom: 20,
+            bottom: 10,
           ),
       child: ListTile(
+        onTap: onTap,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
@@ -37,6 +39,10 @@ class UserCard extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: ColorAsset.violet,
+            image: DecorationImage(
+              image: NetworkImage(path!),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         title: Text(

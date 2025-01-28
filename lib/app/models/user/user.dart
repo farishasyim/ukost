@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ukost/app/models/pivot/pivot.dart';
 import 'package:ukost/config/constant.dart';
 
 class User {
@@ -14,6 +15,7 @@ class User {
       identityCardLink;
   DateTime? dateOfBirth;
   Role? role;
+  PivotRoom? pivot;
 
   User({
     this.id,
@@ -26,6 +28,7 @@ class User {
     this.identityCard,
     this.identityNumber,
     this.name,
+    this.pivot,
     this.phone,
     this.profilePicture,
   });
@@ -33,6 +36,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         name: json["name"],
+        pivot: json["pivot"] != null ? PivotRoom.fromJson(json["pivot"]) : null,
         profileLink: json["profile_link"],
         identityCardLink: json["identity_card_link"],
         email: json["email"],
@@ -53,6 +57,7 @@ class User {
         "id": id,
         "name": name,
         "email": email,
+        "pivot": pivot?.toMap(),
         "phone": phone,
         "identity_card_link": identityCardLink,
         "profile_link": profileLink,

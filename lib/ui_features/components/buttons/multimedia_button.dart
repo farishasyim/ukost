@@ -79,7 +79,7 @@ class _MultimediaButtonState extends State<MultimediaButton> {
                         child: Icon(
                           Icons.cancel_rounded,
                           color: ColorAsset.red,
-                          size: 60,
+                          size: screenWidth(context) * 0.1,
                         ),
                       ),
                     ),

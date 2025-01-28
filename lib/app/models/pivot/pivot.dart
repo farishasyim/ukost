@@ -24,4 +24,14 @@ class PivotRoom {
             json["left_at"] != null ? DateTime.parse(json["left_at"]) : null,
         user: json["user"] != null ? User.fromJson(json["user"]) : null,
       );
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "customer_id": customerId,
+      "left_at": leftAt,
+      "room_id": roomId,
+      "user": user?.toMap(),
+    };
+  }
 }

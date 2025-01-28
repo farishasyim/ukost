@@ -104,12 +104,27 @@ class _RoomPageState extends State<RoomPage> {
                                     },
                                     onLongPress: () {
                                       Modals(context).action(
-                                        onDelete: () {},
+                                        onDelete: () {
+                                          Modals().confirmation(
+                                            onTap: () async {
+                                              Modals().loading();
+                                              var res = await RoomRepository
+                                                  .deleteRoom(room.id);
+                                              if (res) {
+                                                await init();
+                                              }
+                                              backScreen();
+                                            },
+                                          );
+                                        },
                                         onEdit: () {
                                           nextScreen(
                                             FormRoomPage(
                                               category: category,
                                               room: room,
+                                              onSuccess: () {
+                                                init();
+                                              },
                                             ),
                                           );
                                         },

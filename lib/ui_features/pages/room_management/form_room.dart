@@ -67,13 +67,21 @@ class _FormRoomPageState extends State<FormRoomPage> {
                   onTap: () {
                     Modals().confirmation(
                       onTap: () async {
+                        bool res = false;
                         FocusScope.of(context).unfocus();
                         loading.value = true;
                         Map<String, dynamic> request = {
                           "name": nameController.text,
                           "category_id": widget.category.id,
                         };
-                        var res = await RoomRepository.storeRoom(request);
+                        if (widget.room != null) {
+                          res = await RoomRepository.updateRoom(
+                            widget.room?.id,
+                            request,
+                          );
+                        } else {
+                          res = await RoomRepository.storeRoom(request);
+                        }
                         loading.value = false;
                         if (res) {
                           backScreen();

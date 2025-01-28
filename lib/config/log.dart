@@ -11,6 +11,9 @@ class Log {
 
   static void message(Response response) {
     Log("${response.realUri} | ${response.statusCode} => ${response.data}");
+    if (response.statusCode == 201) {
+      Snackbar.message(response.data["message"]);
+    }
   }
 
   static void error(DioException exception) {

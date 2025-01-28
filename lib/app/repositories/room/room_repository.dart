@@ -23,6 +23,39 @@ class RoomRepository {
     return false;
   }
 
+  static Future<bool> updateRoom(int? id, Map<String, dynamic> request) async {
+    try {
+      var res = await dio.post(
+        "${Routes.roomManagement}/$id",
+        data: request,
+        options: Header.init(),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
+
+  static Future<bool> deleteRoom(int? id) async {
+    try {
+      var res = await dio.delete(
+        "${Routes.roomManagement}/$id",
+        options: Header.init(),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
+
   static Future<bool> pivotRoom(Map<String, dynamic> request) async {
     try {
       var res = await dio.post(
