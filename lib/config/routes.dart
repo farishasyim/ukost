@@ -21,4 +21,5 @@ class Routes {
 
   // -------------- USER MANAGEMENT ------------------
   static const String userManagement = "$api/user-management";
+  static const String storeUser = "$userManagement/store";
 }

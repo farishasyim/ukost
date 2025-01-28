@@ -1,12 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/components/appbar/appbar_primary.dart';
-import 'package:ukost/ui_features/components/card/user_card.dart';
+// import 'package:ukost/ui_features/components/card/user_card.dart';
 import 'package:ukost/ui_features/components/inputs/textfield_primary.dart';
+import 'package:ukost/ui_features/pages/user_management/detail_user.dart';
+import 'package:ukost/ui_features/pages/user_management/form_user_management.dart';
+import 'package:ukost/app/models/user/user.dart';
+import 'package:ukost/app/repositories/user/user_repository.dart';
 
-class UserPage extends StatelessWidget {
+class UserPage extends StatefulWidget {
   const UserPage({super.key});
+
+  @override
+  State<UserPage> createState() => _UserPageState();
+}
+
+class _UserPageState extends State<UserPage> {
+  List<User> users = [];
+  User? selectedUser;
+
+  Future<void> init() async {
+    users = await UserRepository.getUser();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (mounted) {
+      init();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +49,19 @@ class UserPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   verticalSpace(120),
-                  for (var i = 0; i < 5; i++)
-                    UserCard(
-                      padding: const EdgeInsets.only(
-                        bottom: 20,
-                      ),
-                      title: "Pengguna ${i + 1}",
-                      subtitle: i.isEven ? "-" : "Kamar 201",
-                      active: i.isEven,
+                  for (var user in users)
+                    ListTile(
+                      onTap: () async {
+                        selectedUser = user;
+                        await nextScreen(
+                          UserDetailPage(user: selectedUser!),
+                        );
+                      },
+                      leading: CircleAvatar(
+                          // backgroundImage: NetworkImage(user.profilePictureUrl),
+                          ),
+                      title: Text(user.name ?? 'No Name'),
+                      subtitle: Text(user.phone ?? 'No Phone'),
                     ),
                   verticalSpace(60),
                 ],
@@ -68,7 +99,11 @@ class UserPage extends StatelessWidget {
                     ),
                     child: FloatingActionButton(
                       heroTag: "user",
-                      onPressed: () {},
+                      onPressed: () async {
+                        await nextScreen(
+                          const FormUserManagement(),
+                        );
+                      },
                       backgroundColor: ColorAsset.violet,
                       child: Icon(
                         Icons.add_rounded,
