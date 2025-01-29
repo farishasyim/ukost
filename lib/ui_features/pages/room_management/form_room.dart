@@ -65,6 +65,7 @@ class _FormRoomPageState extends State<FormRoomPage> {
                   loading: loading.value,
                   radius: 8,
                   onTap: () {
+                    FocusScope.of(context).unfocus();
                     Modals().confirmation(
                       onTap: () async {
                         bool res = false;

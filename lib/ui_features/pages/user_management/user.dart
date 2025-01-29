@@ -64,7 +64,8 @@ class _UserPageState extends State<UserPage> {
                         path: user.profileLink,
                         active: user.pivot == null,
                         title: user.name ?? "",
-                        subtitle: user.pivot != null ? "asd" : "asd",
+                        subtitle:
+                            user.pivot != null ? user.pivot?.room?.name : "-",
                       ),
                     verticalSpace(60),
                   ],

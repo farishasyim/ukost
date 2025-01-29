@@ -68,6 +68,7 @@ class _FormUserManagement extends State<FormUserManagement> {
             path: widget.user?.profileLink,
             profilePicture: profilePicture,
             gender: gender,
+            identityCardPicture: widget.user?.identityCardLink,
             dobController: dobController,
             emailController: emailController,
             nameController: nameController,

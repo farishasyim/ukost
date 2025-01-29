@@ -28,6 +28,7 @@ class FormUser extends StatelessWidget {
     this.onSubmit,
     this.onProfilePicture,
     this.profilePicture,
+    this.identityCardPicture,
   });
   final String? path, gender;
   final TextEditingController emailController,
@@ -40,6 +41,7 @@ class FormUser extends StatelessWidget {
   final Function(File)? onAttachIdentity;
   final Function(Map<String, dynamic>)? onSubmit;
   final File? profilePicture;
+  final String? identityCardPicture;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +100,7 @@ class FormUser extends StatelessWidget {
               ),
               MultimediaButton(
                 title: "Tambahkan Foto KTP/SIM",
+                path: identityCardPicture,
                 onTap: onAttachIdentity!,
                 onCancel: onCancelAttach!,
               ),

@@ -103,6 +103,7 @@ class _FormCategoryPageState extends State<FormCategoryPage> {
                   loading: loading.value,
                   radius: 8,
                   onTap: () {
+                    FocusScope.of(context).unfocus();
                     Modals().confirmation(
                       onTap: () async {
                         bool res = false;

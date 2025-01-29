@@ -1,20 +1,25 @@
+import 'package:ukost/app/models/room/room.dart';
 import 'package:ukost/app/models/user/user.dart';
 
 class PivotRoom {
   int? id, customerId, roomId;
   DateTime? leftAt, createdAt;
   User? user;
+  Room? room;
 
-  PivotRoom(
-      {this.createdAt,
-      this.customerId,
-      this.id,
-      this.leftAt,
-      this.roomId,
-      this.user});
+  PivotRoom({
+    this.room,
+    this.createdAt,
+    this.customerId,
+    this.id,
+    this.leftAt,
+    this.roomId,
+    this.user,
+  });
 
   factory PivotRoom.fromJson(Map<String, dynamic> json) => PivotRoom(
         id: json["id"],
+        room: json["room"] != null ? Room.fromJson(json["room"]) : null,
         customerId: json["customer_id"],
         createdAt: json["created_at"] != null
             ? DateTime.parse(json["created_at"])
