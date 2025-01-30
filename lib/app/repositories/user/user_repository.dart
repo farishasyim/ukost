@@ -28,10 +28,10 @@ class UserRepository {
     return [];
   }
 
-  static Future<User?> add(Map<String, dynamic> formData) async {
+  static Future<User?> store(Map<String, dynamic> formData) async {
     try {
       var res = await dio.post(
-        "${Routes.userManagement}/store",
+        Routes.userManagementStore,
         data: FormData.fromMap(formData),
         options: Header.init(isMultipart: true),
       );

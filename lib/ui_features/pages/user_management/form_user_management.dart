@@ -136,7 +136,7 @@ class _FormUserManagement extends State<FormUserManagement> {
                       formData,
                     );
                   } else {
-                    user = await UserRepository.add(formData);
+                    user = await UserRepository.store(formData);
                   }
 
                   loading.value = false;
