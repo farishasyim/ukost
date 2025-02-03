@@ -29,6 +29,9 @@ class FormUser extends StatelessWidget {
     this.onProfilePicture,
     this.profilePicture,
     this.identityCardPicture,
+    this.selectedRoom,
+    this.onSelectRoom,
+    this.rooms,
   });
   final String? path, gender;
   final TextEditingController emailController,
@@ -42,6 +45,11 @@ class FormUser extends StatelessWidget {
   final Function(Map<String, dynamic>)? onSubmit;
   final File? profilePicture;
   final String? identityCardPicture;
+
+  final List<String>? rooms; // Daftar ruangan
+  final String? selectedRoom; // Ruangan yang dipilih
+  final Function(dynamic)?
+      onSelectRoom; // Fungsi untuk menangani pemilihan ruangan
 
   @override
   Widget build(BuildContext context) {
@@ -83,16 +91,34 @@ class FormUser extends StatelessWidget {
         ),
         if (onAttachIdentity != null &&
             onCancelAttach != null &&
-            identityNumberController != null)
+            identityNumberController != null &&
+            rooms != null &&
+            onSelectRoom != null)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Divider(),
               const HorizontalText(
-                title: "Identitas",
+                title: "Pilih Ruangan",
                 padding: EdgeInsets.zero,
               ),
               verticalSpace(5),
+              DropdownButton<String>(
+                value: selectedRoom,
+                onChanged: (newValue) {
+                  onSelectRoom!(newValue!); // Memilih ruangan
+                },
+                items: rooms!.map<DropdownMenuItem<String>>((String room) {
+                  return DropdownMenuItem<String>(
+                    value: room,
+                    child: Text(room),
+                  );
+                }).toList(),
+              ),
+              const HorizontalText(
+                title: "Identitas",
+                padding: EdgeInsets.zero,
+              ),
               TextFieldPrimary(
                 controller: identityNumberController,
                 label: "No KTP/SIM",
@@ -120,6 +146,7 @@ class FormUser extends StatelessWidget {
                   "gender": gender,
                   "phone": phoneController.text,
                   "date_of_birth": dobController.text,
+                  "room": selectedRoom, // Menambahkan data ruangan yang dipilih
                 };
                 if (onSubmit != null) {
                   onSubmit!(request);

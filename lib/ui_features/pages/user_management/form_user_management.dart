@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ukost/app/models/user/user.dart';
+import 'package:ukost/app/repositories/category/category_repository.dart';
 import 'package:ukost/app/repositories/user/user_repository.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/date_picker.dart';
@@ -34,10 +35,13 @@ class _FormUserManagement extends State<FormUserManagement> {
   String? gender;
   File? profilePicture;
   File? identityCard;
+  List<String> availableRooms = [];
+  String? selectedRoom;
 
   @override
   void initState() {
     super.initState();
+    _fetchAvailableRooms();
     if (widget.user != null) {
       nameController.text = widget.user?.name ?? '';
       emailController.text = widget.user?.email ?? '';
@@ -48,7 +52,23 @@ class _FormUserManagement extends State<FormUserManagement> {
       gender = widget.user?.gender;
       identityNumberController.text =
           (widget.user?.identityNumber ?? "").toString();
+      selectedRoom = widget.user?.room?.name;
     }
+  }
+
+  void _fetchAvailableRooms() async {
+    var categories = await CategoryRepository.getCategory();
+    List<String> rooms = [];
+    for (var category in categories) {
+      for (var room in category.rooms) {
+        if (room.pivot == null || room.name == selectedRoom) {
+          rooms.add(room.name ?? "");
+        }
+      }
+    }
+    setState(() {
+      availableRooms = rooms;
+    });
   }
 
   @override
@@ -74,6 +94,13 @@ class _FormUserManagement extends State<FormUserManagement> {
             nameController: nameController,
             phoneController: phoneController,
             identityNumberController: identityNumberController,
+            rooms: availableRooms,
+            selectedRoom: selectedRoom,
+            onSelectRoom: (room) {
+              setState(() {
+                selectedRoom = room;
+              });
+            },
             onChangeGender: (selectedGender) {
               setState(() {
                 gender = selectedGender;
@@ -127,6 +154,7 @@ class _FormUserManagement extends State<FormUserManagement> {
                         await MultipartFile.fromFile(identityCard!.path);
                   }
                   formData["identity_number"] = identityNumberController.text;
+                  formData["room"] = selectedRoom;
 
                   User? user;
 

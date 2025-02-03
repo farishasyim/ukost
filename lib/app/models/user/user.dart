@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ukost/app/models/pivot/pivot.dart';
+import 'package:ukost/app/models/room/room.dart';
 import 'package:ukost/config/constant.dart';
 
 class User {
@@ -16,6 +17,7 @@ class User {
   DateTime? dateOfBirth;
   Role? role;
   PivotRoom? pivot;
+  Room? room; // Tambahkan properti room di sini
 
   User({
     this.id,
@@ -31,6 +33,7 @@ class User {
     this.pivot,
     this.phone,
     this.profilePicture,
+    this.room, // Jangan lupa tambahkan dalam constructor
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -49,6 +52,9 @@ class User {
         dateOfBirth: json["date_of_birth"] != null
             ? DateTime.parse(json["date_of_birth"])
             : null,
+        room: json["room"] != null
+            ? Room.fromJson(json["room"])
+            : null, // Parsing room
       );
 
   factory User.set(User user) => user;

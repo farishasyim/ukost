@@ -18,17 +18,26 @@ class UserDetailPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             const CircleAvatar(
               radius: 50,
               // backgroundImage: NetworkImage(user.profilePictureUrl),
             ),
             verticalSpace(20),
-            Text("Nama: ${user.name}", style: const TextStyle(fontSize: 18)),
-            Text("Telepon: ${user.phone}",
-                style: const TextStyle(fontSize: 18)),
+            _buildTextField(label: "Nama", initialValue: user.name ?? ''),
+            _buildTextField(label: "Telepon", initialValue: user.phone ?? ''),
+            _buildTextField(label: "Email", initialValue: user.email ?? ''),
+            _buildTextField(label: "Gender", initialValue: user.gender ?? ''),
+            _buildTextField(
+                label: "Tanggal Lahir",
+                initialValue:
+                    user.dateOfBirth?.toLocal().toString().split(' ')[0] ?? ''),
+            _buildTextField(
+                label: "NIK",
+                initialValue: user.identityNumber?.toString() ?? ''),
+            _buildTextField(
+                label: "Ruangan", initialValue: user.room?.toString() ?? ''),
             verticalSpace(20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,6 +66,37 @@ class UserDetailPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+      {required String label, required String initialValue}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 40, // tinggi TextField
+            child: TextFormField(
+              style:
+                  const TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+              initialValue: initialValue,
+              readOnly: true,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                isDense: true,
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
