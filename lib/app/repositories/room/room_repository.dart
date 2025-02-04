@@ -13,7 +13,7 @@ class RoomRepository {
         data: request,
         options: Header.init(),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return true;
       }
@@ -30,7 +30,7 @@ class RoomRepository {
         data: request,
         options: Header.init(),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return true;
       }
@@ -46,7 +46,7 @@ class RoomRepository {
         "${Routes.roomManagement}/$id",
         options: Header.init(),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return true;
       }
@@ -63,7 +63,7 @@ class RoomRepository {
         data: request,
         options: Header.init(),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return true;
       }
@@ -79,7 +79,7 @@ class RoomRepository {
         "${Routes.roomManagement}/$id",
         options: Header.init(),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return Room.fromJson(res.data['data']);
       }

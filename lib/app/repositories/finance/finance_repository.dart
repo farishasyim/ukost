@@ -1,21 +1,22 @@
 import 'package:dio/dio.dart';
-import 'package:ukost/app/models/category/category.dart';
+import 'package:ukost/app/models/transaction/transaction.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/header.dart';
 import 'package:ukost/config/json_list.dart';
 import 'package:ukost/config/log.dart';
 import 'package:ukost/config/routes.dart';
 
-class CategoryRepository {
-  static Future<List<Category>> getCategory() async {
+class FinanceRepository {
+  static Future<List<Transaction>> getIncome() async {
     try {
       var res = await dio.get(
-        Routes.roomManagement,
+        Routes.transaction,
         options: Header.init(),
       );
-      if (res.statusCode == 200 || res.statusCode == 201) {
+      if (res.statusCode == 200) {
         Log.message(res);
-        return JsonList<Category>(res.data, (e) => Category.fromJson(e)).data;
+        return JsonList<Transaction>(res.data, (e) => Transaction.fromJson(e))
+            .data;
       }
     } on DioException catch (e) {
       Log.error(e);
@@ -23,26 +24,10 @@ class CategoryRepository {
     return [];
   }
 
-  static Future<Category?> show(int id) async {
-    try {
-      var res = await dio.get(
-        "${Routes.category}/$id",
-        options: Header.init(),
-      );
-      if (res.statusCode == 200 || res.statusCode == 201) {
-        Log.message(res);
-        return Category.fromJson(res.data["data"]);
-      }
-    } on DioException catch (e) {
-      Log.error(e);
-    }
-    return null;
-  }
-
-  static Future<bool> storeCategory(Map<String, dynamic> request) async {
+  static Future<bool> storeIncome(Map<String, dynamic> request) async {
     try {
       var res = await dio.post(
-        Routes.storeCategory,
+        Routes.storeTransaction,
         data: FormData.fromMap(request),
         options: Header.init(isMultipart: true),
       );
@@ -56,13 +41,10 @@ class CategoryRepository {
     return false;
   }
 
-  static Future<bool> updateCategory(
-    int id,
-    Map<String, dynamic> request,
-  ) async {
+  static Future<bool> updateIncome(int id, Map<String, dynamic> request) async {
     try {
       var res = await dio.post(
-        "${Routes.category}/$id",
+        "${Routes.transaction}/$id",
         data: FormData.fromMap(request),
         options: Header.init(isMultipart: true),
       );
@@ -76,10 +58,10 @@ class CategoryRepository {
     return false;
   }
 
-  static Future<bool> deleteCategory(int id) async {
+  static Future<bool> deleteIncome(int id) async {
     try {
       var res = await dio.delete(
-        "${Routes.category}/$id",
+        "${Routes.transaction}/$id",
         options: Header.init(),
       );
       if (res.statusCode == 200 || res.statusCode == 201) {

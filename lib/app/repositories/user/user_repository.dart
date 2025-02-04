@@ -18,7 +18,7 @@ class UserRepository {
         },
         options: Header.init(),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return JsonList<User>(res.data, (e) => User.fromJson(e)).data;
       }
@@ -35,7 +35,7 @@ class UserRepository {
         data: FormData.fromMap(formData),
         options: Header.init(isMultipart: true),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return User.fromJson(res.data["data"]);
       }
@@ -55,7 +55,7 @@ class UserRepository {
         data: FormData.fromMap(request),
         options: Header.init(isMultipart: true),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return User.fromJson(res.data["data"]);
       }
@@ -71,7 +71,7 @@ class UserRepository {
         "${Routes.userManagement}/$id",
         options: Header.init(),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return true;
       }

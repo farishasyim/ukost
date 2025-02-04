@@ -16,7 +16,7 @@ class AuthRepository {
         },
         options: Header.init(),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         storage.copyWith(
           account: User.fromJson(res.data["data"]),
@@ -36,7 +36,7 @@ class AuthRepository {
         Routes.logout,
         options: Header.init(),
       );
-      if (res.statusCode == 200) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return true;
       }

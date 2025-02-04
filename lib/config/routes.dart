@@ -1,8 +1,8 @@
 class Routes {
-  static const String development = "http://192.168.1.4:8000";
+  static const String development = "http://192.168.56.1:8000";
   static const String production = "https://ukost.farishasyim.my.id";
 
-  static const String endpoint = production;
+  static const String endpoint = development;
 
   static const String api = "$endpoint/api";
 
@@ -23,6 +23,9 @@ class Routes {
   static const String userManagement = "$api/user-management";
   static const String userManagementStore = "$userManagement/store";
 
-  // --------------- INCOME ---------------
-  static const String income = "$api/income";
+  // --------------- FINANCE ---------------
+  static const String transaction = "$api/transaction";
+  static const String storeTransaction = "$transaction/store";
+  static const String expense = "$api/expense";
+  static const String storeExpense = "$expense/store";
 }

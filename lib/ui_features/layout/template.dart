@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/ui_features/components/bottom/bottom_navigation.dart';
+import 'package:ukost/ui_features/pages/finance/layout.dart';
 import 'package:ukost/ui_features/pages/home/home.dart';
 import 'package:ukost/ui_features/pages/profile/profile.dart';
 import 'package:ukost/ui_features/pages/room_management/room.dart';
@@ -17,7 +18,7 @@ class _TemplateState extends State<Template> {
   int index = 0;
   List<Widget> widgets = const [
     HomePage(),
-    Placeholder(),
+    FinanceLayout(),
     RoomPage(),
     UserPage(),
     ProfilePage(),

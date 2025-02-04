@@ -22,10 +22,14 @@ class DatePicker {
     );
   }
 
-  static Future<TimeOfDay?> getTimePicker() async {
+  static Future<TimeOfDay?> getTimePicker([DateTime? value]) async {
+    TimeOfDay? time;
+    if (value != null) {
+      time = TimeOfDay(hour: value.hour, minute: value.minute);
+    }
     return showTimePicker(
       context: navigatorKey.currentContext!,
-      initialTime: TimeOfDay.now(),
+      initialTime: time ?? TimeOfDay.now(),
     );
   }
 }

@@ -14,6 +14,9 @@ class App extends StatelessWidget {
       title: appname,
       theme: ThemeData(
         scaffoldBackgroundColor: ColorAsset.white,
+        tabBarTheme: TabBarTheme(
+          indicatorColor: ColorAsset.violet,
+        ),
         appBarTheme: AppBarTheme(
           titleTextStyle: GoogleFonts.inter(
             fontSize: 16,
