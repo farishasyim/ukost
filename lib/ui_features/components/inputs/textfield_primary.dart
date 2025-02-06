@@ -40,7 +40,7 @@ class TextFieldPrimary extends StatelessWidget {
   final String hintText;
   final bool? expands;
   final bool readOnly, isRaw, obs;
-  final int maxLines;
+  final int? maxLines;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final Function()? onTap, onSend, onEditingComplete;

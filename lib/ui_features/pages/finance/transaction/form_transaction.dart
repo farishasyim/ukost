@@ -44,8 +44,8 @@ class _FormTransactionPageState extends State<FormTransactionPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    priceController.text = (widget.transaction?.price ?? 0).toString();
     if (widget.transaction != null) {
+      priceController.text = (widget.transaction?.price ?? 0).toString();
       user = widget.transaction?.pivotRoom?.user;
       status = widget.transaction?.status;
       if (status == "paid") {

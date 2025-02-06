@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/ui_features/pages/finance/expense/expense.dart';
 import 'package:ukost/ui_features/pages/finance/transaction/transaction.dart';
 
 class FinanceLayout extends StatefulWidget {
@@ -40,7 +41,7 @@ class _FinanceLayoutState extends State<FinanceLayout> {
               index: index,
               children: const [
                 TransactionPage(),
-                Placeholder(),
+                ExpensePage(),
               ],
             ),
           ),

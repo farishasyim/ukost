@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:ukost/app/models/transaction/transaction.dart';
+import 'package:ukost/app/models/expense/expense.dart';
 import 'package:ukost/app/repositories/finance/finance_repository.dart';
 import 'package:ukost/config/color_assets.dart';
-import 'package:ukost/config/dialog.dart';
-import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
 import 'package:ukost/ui_features/components/tile/finance_tile.dart';
-import 'package:ukost/ui_features/pages/finance/transaction/form_transaction.dart';
+import 'package:ukost/ui_features/pages/finance/expense/form_expense.dart';
 
-class TransactionPage extends StatefulWidget {
-  const TransactionPage({super.key});
+class ExpensePage extends StatefulWidget {
+  const ExpensePage({super.key});
 
   @override
-  State<TransactionPage> createState() => _TransactionPageState();
+  State<ExpensePage> createState() => _ExpensePageState();
 }
 
-class _TransactionPageState extends State<TransactionPage> {
-  List<Transaction> transactions = [];
+class _ExpensePageState extends State<ExpensePage> {
+  List<Expense> expenses = [];
   int? selected;
 
   Future<void> init() async {
-    transactions = await FinanceRepository.getIncome();
+    expenses = await FinanceRepository.getExpense();
     setState(() {});
   }
 
@@ -30,6 +28,13 @@ class _TransactionPageState extends State<TransactionPage> {
     // TODO: implement initState
     super.initState();
     init();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    init().ignore();
   }
 
   @override
@@ -43,30 +48,10 @@ class _TransactionPageState extends State<TransactionPage> {
           ListView(
             padding: const EdgeInsets.symmetric(),
             children: [
-              for (var row in transactions)
+              for (var row in expenses)
                 FinanceTile(
-                  onLongPress: () {
-                    Modals().action(
-                      onDelete: () {
-                        Modals().confirmation(
-                          onTap: () async {
-                            var res =
-                                await FinanceRepository.deleteIncome(row.id!);
-                            if (res) {
-                              init();
-                            }
-                          },
-                        );
-                      },
-                      onEdit: () {
-                        nextScreen(
-                          FormTransactionPage(
-                            transaction: row,
-                          ),
-                        );
-                      },
-                    );
-                  },
+                  title: row.title,
+                  price: row.price,
                   onTap: () {
                     setState(() {
                       if (selected == row.id) {
@@ -77,16 +62,9 @@ class _TransactionPageState extends State<TransactionPage> {
                     });
                   },
                   expanded: selected == row.id,
-                  title: row.invoice,
-                  subtitle: row.pivotRoom?.user?.name,
-                  price: row.price ?? 0,
                   children: [
                     HorizontalText(
-                      trailing: DateFormatter.dateTime(row.date),
-                    ),
-                    HorizontalText(
-                      trailing:
-                          row.status == "paid" ? "Lunas" : "Belum Dibayar",
+                      title: row.description,
                     ),
                   ],
                 ),
@@ -100,9 +78,9 @@ class _TransactionPageState extends State<TransactionPage> {
                 bottom: 15,
               ),
               child: FloatingActionButton(
-                heroTag: "income",
+                heroTag: "expense",
                 onPressed: () {
-                  nextScreen(const FormTransactionPage());
+                  nextScreen(const FormExpensePage());
                 },
                 backgroundColor: ColorAsset.violet,
                 child: Icon(

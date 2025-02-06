@@ -38,10 +38,12 @@ class FinanceTile extends StatelessWidget {
               title ?? "",
               style: GoogleFonts.inter(),
             ),
-            subtitle: Text(
-              subtitle ?? "",
-              style: GoogleFonts.inter(),
-            ),
+            subtitle: subtitle != null
+                ? Text(
+                    subtitle ?? "",
+                    style: GoogleFonts.inter(),
+                  )
+                : null,
             trailing: Text(
               price.toCurrency(),
               style: GoogleFonts.inter(
