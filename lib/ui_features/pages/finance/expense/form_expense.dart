@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:ukost/app/models/expense/expense.dart';
 import 'package:ukost/app/repositories/finance/finance_repository.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/date_picker.dart';
@@ -14,7 +15,8 @@ import 'package:ukost/ui_features/components/buttons/primary_button.dart';
 import 'package:ukost/ui_features/components/inputs/textfield_primary.dart';
 
 class FormExpensePage extends StatefulWidget {
-  const FormExpensePage({super.key});
+  const FormExpensePage({super.key, this.expense});
+  final Expense? expense;
 
   @override
   State<FormExpensePage> createState() => _FormExpensePageState();
@@ -28,6 +30,23 @@ class _FormExpensePageState extends State<FormExpensePage> {
       titleController = TextEditingController(),
       descriptionController = TextEditingController();
   List<File> files = [];
+  List<String> existed = [];
+  List<String> deleted = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.expense != null) {
+      titleController.text = widget.expense?.title ?? "";
+      descriptionController.text = widget.expense?.description ?? "";
+      priceController.text = (widget.expense?.price ?? 0).toString();
+      date = widget.expense?.createdAt;
+      time = widget.expense?.createdAt;
+      existed = widget.expense!.photos;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -97,6 +116,10 @@ class _FormExpensePageState extends State<FormExpensePage> {
               ),
               verticalSpace(5),
               MultipleMultimediaButton(
+                paths: existed,
+                onDelete: (e) {
+                  deleted.add(e);
+                },
                 onTap: (e) {
                   files = e;
                 },
@@ -130,8 +153,15 @@ class _FormExpensePageState extends State<FormExpensePage> {
                               request["photos[]"]
                                   .add(await MultipartFile.fromFile(row.path));
                             }
-                            var res =
-                                await FinanceRepository.storeExpense(request);
+                            var res = false;
+                            if (widget.expense == null) {
+                              res =
+                                  await FinanceRepository.storeExpense(request);
+                            } else {
+                              request["deleted[]"] = deleted;
+                              res = await FinanceRepository.updateExpense(
+                                  widget.expense!.id!, request);
+                            }
                             loading.value = false;
                             if (res) {
                               backScreen();

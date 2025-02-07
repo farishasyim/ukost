@@ -6,16 +6,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/file_picker.dart';
+import 'package:ukost/config/routes.dart';
 
 class MultipleMultimediaButton extends StatefulWidget {
   const MultipleMultimediaButton({
     super.key,
     required this.onTap,
-    this.path,
+    this.paths = const [],
     this.title,
+    this.onDelete,
   });
   final Function(List<File>) onTap;
-  final String? path, title;
+  final String? title;
+  final List<String> paths;
+  final Function(String)? onDelete;
 
   @override
   State<MultipleMultimediaButton> createState() =>
@@ -24,6 +28,14 @@ class MultipleMultimediaButton extends StatefulWidget {
 
 class _MultipleMultimediaButtonState extends State<MultipleMultimediaButton> {
   List<File> files = [];
+  List<String> paths = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    paths = widget.paths;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +66,7 @@ class _MultipleMultimediaButtonState extends State<MultipleMultimediaButton> {
           width: screenWidth(context),
           height: 180,
           child: () {
-            if (files.isNotEmpty) {
+            if (files.isNotEmpty || paths.isNotEmpty) {
               return ListView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.only(
@@ -63,6 +75,39 @@ class _MultipleMultimediaButtonState extends State<MultipleMultimediaButton> {
                   bottom: 20,
                 ),
                 children: [
+                  for (var row in paths)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          Image.network(
+                            "${Routes.endpoint}/receipt/$row",
+                            fit: BoxFit.fitWidth,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                paths.remove(row);
+                              });
+                              if (widget.onDelete != null) {
+                                widget.onDelete!(row);
+                              }
+                            },
+                            icon: Container(
+                              decoration: BoxDecoration(
+                                color: ColorAsset.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.cancel_rounded,
+                                color: ColorAsset.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   for (var row in files)
                     Padding(
                       padding: const EdgeInsets.only(right: 20),
@@ -96,8 +141,6 @@ class _MultipleMultimediaButtonState extends State<MultipleMultimediaButton> {
                     ),
                 ],
               );
-            } else if (widget.path != null) {
-              return Image.network(widget.path!);
             }
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,

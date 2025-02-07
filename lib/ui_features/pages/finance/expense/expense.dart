@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ukost/app/models/expense/expense.dart';
 import 'package:ukost/app/repositories/finance/finance_repository.dart';
 import 'package:ukost/config/color_assets.dart';
+import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/dialog.dart';
+import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
 import 'package:ukost/ui_features/components/tile/finance_tile.dart';
@@ -52,6 +56,7 @@ class _ExpensePageState extends State<ExpensePage> {
                 FinanceTile(
                   title: row.title,
                   price: row.price,
+                  subtitle: row.user?.name,
                   onTap: () {
                     setState(() {
                       if (selected == row.id) {
@@ -61,11 +66,54 @@ class _ExpensePageState extends State<ExpensePage> {
                       }
                     });
                   },
+                  onLongPress: () {
+                    Modals().action(
+                      onDelete: () {
+                        Modals().confirmation(
+                          onTap: () async {
+                            var res =
+                                await FinanceRepository.deleteExpense(row.id!);
+                            if (res) {
+                              init();
+                            }
+                          },
+                        );
+                      },
+                      onEdit: () {
+                        nextScreen(FormExpensePage(expense: row));
+                      },
+                    );
+                  },
                   expanded: selected == row.id,
                   children: [
                     HorizontalText(
+                      titleStyle: GoogleFonts.inter(
+                        fontSize: 12,
+                      ),
+                      title: DateFormatter.dateTime(row.createdAt),
+                    ),
+                    verticalSpace(10),
+                    HorizontalText(
                       title: row.description,
                     ),
+                    if (row.urls.isNotEmpty)
+                      HorizontalText(
+                        title: "",
+                        trailing: "Lihat kwitansi",
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (e) {
+                              return PageView(
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  for (var row in row.urls) Image.network(row),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
                   ],
                 ),
             ],

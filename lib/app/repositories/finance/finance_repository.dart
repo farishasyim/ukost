@@ -92,10 +92,44 @@ class FinanceRepository {
     return false;
   }
 
+  static Future<bool> updateExpense(
+      int id, Map<String, dynamic> request) async {
+    try {
+      var res = await dio.post(
+        "${Routes.expense}/$id",
+        data: FormData.fromMap(request),
+        options: Header.init(isMultipart: true),
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
+
   static Future<bool> deleteIncome(int id) async {
     try {
       var res = await dio.delete(
         "${Routes.transaction}/$id",
+        options: Header.init(),
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
+
+  static Future<bool> deleteExpense(int id) async {
+    try {
+      var res = await dio.delete(
+        "${Routes.expense}/$id",
         options: Header.init(),
       );
       if (res.statusCode == 200 || res.statusCode == 201) {
