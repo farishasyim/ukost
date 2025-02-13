@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ukost/app/models/category/category.dart';
+import 'package:ukost/app/models/graph/graph.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/header.dart';
 import 'package:ukost/config/json_list.dart';
@@ -16,6 +17,22 @@ class CategoryRepository {
       if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
         return JsonList<Category>(res.data, (e) => Category.fromJson(e)).data;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return [];
+  }
+
+  static Future<List<Graph>> getRecentTransaction() async {
+    try {
+      var res = await dio.get(
+        Routes.recentTransaction,
+        options: Header.init(),
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        Log.message(res);
+        return JsonList<Graph>(res.data, (e) => Graph.fromJson(e)).data;
       }
     } on DioException catch (e) {
       Log.error(e);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:ukost/app/models/category/category.dart';
+import 'package:ukost/app/models/graph/graph.dart';
 import 'package:ukost/app/repositories/category/category_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constant.dart';
@@ -22,40 +23,12 @@ class AdminFragment extends StatefulWidget {
 }
 
 class _AdminFragmentState extends State<AdminFragment> {
-  List<Map<String, dynamic>> lines = [
-    {
-      "label": "11/02/24",
-      "value": 14000,
-    },
-    {
-      "label": "12/02/24",
-      "value": 24000,
-    },
-    {
-      "label": "13/02/24",
-      "value": 5999,
-    },
-    {
-      "label": "14/02/24",
-      "value": 40000,
-    },
-    {
-      "label": "15/02/24",
-      "value": 2000,
-    },
-    {
-      "label": "16/02/24",
-      "value": 15000,
-    },
-    {
-      "label": "17/02/24",
-      "value": 30000,
-    },
-  ];
+  List<Graph> lines = [];
   List<Category> categories = [];
 
   void init() async {
     categories = await CategoryRepository.getCategory();
+    lines = await CategoryRepository.getRecentTransaction();
     setState(() {});
   }
 
@@ -156,12 +129,12 @@ class _AdminFragmentState extends State<AdminFragment> {
                 // Chart title
                 title: const ChartTitle(text: ''),
                 tooltipBehavior: TooltipBehavior(enable: true),
-                series: <LineSeries<Map, String>>[
-                  LineSeries<Map, String>(
+                series: <LineSeries<Graph, String>>[
+                  LineSeries<Graph, String>(
                     dataSource: lines,
                     markerSettings: const MarkerSettings(isVisible: true),
-                    xValueMapper: (income, _) => income["label"],
-                    yValueMapper: (income, _) => income["value"],
+                    xValueMapper: (income, _) => income.xAxis,
+                    yValueMapper: (income, _) => income.yAxis,
                     // Enable data label
                     dataLabelSettings: const DataLabelSettings(
                       isVisible: false,
