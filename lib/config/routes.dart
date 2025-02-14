@@ -25,7 +25,10 @@ class Routes {
 
   // --------------- FINANCE ---------------
   static const String transaction = "$api/transaction";
+  static const String recentTransaction = "$transaction/recent";
   static const String storeTransaction = "$transaction/store";
   static const String expense = "$api/expense";
   static const String storeExpense = "$expense/store";
+
+  static const String complain = "$api/complain";
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ukost/app/models/transaction/transaction.dart';
+import 'package:ukost/app/repositories/finance/finance_repository.dart';
 import 'package:ukost/config/color_assets.dart';
+import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/format_date.dart';
 import 'package:ukost/ui_features/components/appbar/appbar_primary.dart';
-import 'package:ukost/ui_features/components/card/main_menu_card.dart';
+import 'package:ukost/ui_features/components/card/expanse_card.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
 
 class CustomerFragment extends StatefulWidget {
@@ -13,18 +17,33 @@ class CustomerFragment extends StatefulWidget {
 }
 
 class _CustomerFragmentState extends State<CustomerFragment> {
+  List<Transaction> transactions = [];
+
+  Future<void> init() async {
+    transactions = await FinanceRepository.getIncome(TransactionStatus.unpaid);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (mounted) {
+      init();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      // Membungkus seluruh halaman agar scrollable
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
+    return RefreshIndicator(
+      onRefresh: () async {
+        await init();
+      },
+      child: ListView(
         children: [
-          const AppBarPrimary(
+          AppBarPrimary(
             height: null,
-            title: "UKost,",
-            titleStyle: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            title: "Selamat Datang,",
+            subtitle: storage.account?.name ?? "",
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -34,75 +53,24 @@ class _CustomerFragmentState extends State<CustomerFragment> {
           ),
           verticalSpace(10),
           HorizontalText(
-            title: "Main Menu",
-            titleStyle: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+            title: "Tagihan anda",
+            trailing: "",
             onTap: () {},
           ),
           verticalSpace(10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
+          SizedBox(
+            height: 70,
+            width: screenWidth(context),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(left: 20),
               children: [
-                // Baris pertama (dua kolom)
-                Row(
-                  children: [
-                    // Kolom pertama
-                    SizedBox(
-                      height: 125, // Tentukan tinggi kontainer
-                      width: (screenWidth(context) - 30) /
-                          2, // Pembagian lebar antar kolom
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.only(left: 10),
-                        children: [
-                          MenuUserCard(
-                            onTap: () {},
-                            imagePath: 'assets/images/Image1.png',
-                            title: "Manajemen Kamar",
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 10), // Spasi antara kolom
-                    // Kolom kedua
-                    SizedBox(
-                      height: 125, // Tentukan tinggi kontainer
-                      width: (screenWidth(context) - 30) /
-                          2, // Pembagian lebar antar kolom
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.only(left: 10),
-                        children: [
-                          MenuUserCard(
-                            onTap: () {},
-                            imagePath: 'assets/images/Image2.png',
-                            title: "Manajemen Kamar",
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                // Baris kedua (satu kolom)
-                SizedBox(
-                  height: 125, // Tentukan tinggi kontainer
-                  width: screenWidth(context),
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.only(left: 10),
-                    children: [
-                      MenuUserCard(
-                        onTap: () {},
-                        imagePath: 'assets/images/Image3.png',
-                        title: "Manajemen Kamar",
-                      ),
-                    ],
+                for (var row in transactions)
+                  ExpanseCard(
+                    onTap: () {},
+                    title: row.pivotRoom?.user?.name ?? "-",
+                    subtitle: DateFormatter.date(row.date, "dd/MM/yyyy"),
                   ),
-                ),
               ],
             ),
           ),

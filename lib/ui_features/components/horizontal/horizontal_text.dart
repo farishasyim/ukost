@@ -25,14 +25,16 @@ class HorizontalText extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title ?? "",
-            style: titleStyle ??
-                GoogleFonts.inter(
-                  fontWeight: FontWeight.bold,
-                  color: ColorAsset.black,
-                  fontSize: 16,
-                ),
+          Flexible(
+            child: Text(
+              title ?? "",
+              style: titleStyle ??
+                  GoogleFonts.inter(
+                    fontWeight: FontWeight.bold,
+                    color: ColorAsset.black,
+                    fontSize: 16,
+                  ),
+            ),
           ),
           if (trailing != null)
             InkWell(

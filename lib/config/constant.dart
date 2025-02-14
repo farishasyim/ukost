@@ -12,4 +12,6 @@ Storage storage = Storage();
 
 enum Role { customer, admin }
 
+enum TransactionStatus { paid, unpaid }
+
 enum UserStatus { available, unavailable, all }

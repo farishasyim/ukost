@@ -1,22 +1,21 @@
 import 'package:dio/dio.dart';
-import 'package:ukost/app/models/category/category.dart';
-import 'package:ukost/app/models/graph/graph.dart';
+import 'package:ukost/app/models/complain/complain.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/header.dart';
 import 'package:ukost/config/json_list.dart';
 import 'package:ukost/config/log.dart';
 import 'package:ukost/config/routes.dart';
 
-class CategoryRepository {
-  static Future<List<Category>> getCategory() async {
+class ComplainRepository {
+  static Future<List<Complain>> getComplains() async {
     try {
       var res = await dio.get(
-        Routes.roomManagement,
+        Routes.complain,
         options: Header.init(),
       );
       if (res.statusCode == 200 || res.statusCode == 201) {
         Log.message(res);
-        return JsonList<Category>(res.data, (e) => Category.fromJson(e)).data;
+        return JsonList<Complain>(res.data, (e) => Complain.fromJson(e)).data;
       }
     } on DioException catch (e) {
       Log.error(e);
@@ -24,42 +23,10 @@ class CategoryRepository {
     return [];
   }
 
-  static Future<List<Graph>> getRecentTransaction() async {
-    try {
-      var res = await dio.get(
-        Routes.recentTransaction,
-        options: Header.init(),
-      );
-      if (res.statusCode == 200 || res.statusCode == 201) {
-        Log.message(res);
-        return JsonList<Graph>(res.data, (e) => Graph.fromJson(e)).data;
-      }
-    } on DioException catch (e) {
-      Log.error(e);
-    }
-    return [];
-  }
-
-  static Future<Category?> show(int id) async {
-    try {
-      var res = await dio.get(
-        "${Routes.category}/$id",
-        options: Header.init(),
-      );
-      if (res.statusCode == 200 || res.statusCode == 201) {
-        Log.message(res);
-        return Category.fromJson(res.data["data"]);
-      }
-    } on DioException catch (e) {
-      Log.error(e);
-    }
-    return null;
-  }
-
-  static Future<bool> storeCategory(Map<String, dynamic> request) async {
+  static Future<bool> storeComplain(Map<String, dynamic> request) async {
     try {
       var res = await dio.post(
-        Routes.storeCategory,
+        "${Routes.complain}/store",
         data: FormData.fromMap(request),
         options: Header.init(isMultipart: true),
       );
@@ -73,13 +40,13 @@ class CategoryRepository {
     return false;
   }
 
-  static Future<bool> updateCategory(
+  static Future<bool> updateComplain(
     int id,
     Map<String, dynamic> request,
   ) async {
     try {
       var res = await dio.post(
-        "${Routes.category}/$id",
+        "${Routes.complain}/$id",
         data: FormData.fromMap(request),
         options: Header.init(isMultipart: true),
       );
@@ -93,10 +60,10 @@ class CategoryRepository {
     return false;
   }
 
-  static Future<bool> deleteCategory(int id) async {
+  static Future<bool> deleteComplain(int id) async {
     try {
       var res = await dio.delete(
-        "${Routes.category}/$id",
+        "${Routes.complain}/$id",
         options: Header.init(),
       );
       if (res.statusCode == 200 || res.statusCode == 201) {

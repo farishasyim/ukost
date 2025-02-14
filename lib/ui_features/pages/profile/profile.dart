@@ -8,6 +8,7 @@ import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/config/session_manager.dart';
 import 'package:ukost/ui_features/components/buttons/profile_button.dart';
+import 'package:ukost/ui_features/pages/complain/complain.dart';
 import 'package:ukost/ui_features/pages/profile/form_edit_account.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -23,7 +24,13 @@ class ProfilePage extends StatelessWidget {
           nextScreen(const FormEditAccountPage());
         }
       },
-      {"icon": Icons.report, "label": "Komplain", "click": () {}},
+      {
+        "icon": Icons.report,
+        "label": "Komplain",
+        "click": () {
+          nextScreen(const ComplaintPage());
+        }
+      },
       {
         "icon": Icons.logout,
         "label": "Keluar",

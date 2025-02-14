@@ -68,179 +68,189 @@ class _DetailRoomPageState extends State<DetailRoomPage> {
         color: ColorAsset.violet,
         label: room.pivot == null ? "Check In" : "Check Out",
       ),
-      body: ListView(
-        children: [
-          Image.network(
-            room.category!.imageLink!,
-            height: 250,
-            width: screenWidth(context),
-            fit: BoxFit.cover,
-          ),
-          verticalSpace(10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  room.name ?? "",
-                  style: GoogleFonts.inter(
-                    color: ColorAsset.violet,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                Text(
-                  (room.category?.price ?? 0).toCurrency(),
-                  style: GoogleFonts.inter(
-                    color: ColorAsset.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                ),
-                verticalSpace(5),
-                Text(
-                  room.category?.description ?? "",
-                  style: GoogleFonts.inter(
-                    color: ColorAsset.black,
-                    fontSize: 12,
-                  ),
-                ),
-                Divider(
-                  color: ColorAsset.black.withOpacity(0.2),
-                ),
-                if (room.pivot != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Pemilik Kamar",
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w500,
-                          color: ColorAsset.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            room.pivot?.user?.name ?? "-",
-                            style: GoogleFonts.inter(
-                              color: ColorAsset.black,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            room.pivot?.user?.identityNumber == null &&
-                                    room.pivot?.user?.identityCard == null
-                                ? "Data Belum Lengkap"
-                                : "Data Lengkap",
-                            style: GoogleFonts.inter(
-                              color: ColorAsset.black,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                      verticalSpace(5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Masuk",
-                            style: GoogleFonts.inter(
-                              color: ColorAsset.black,
-                              fontSize: 12,
-                            ),
-                          ),
-                          Text(
-                            DateFormatter.date(
-                              room.pivot?.createdAt,
-                              "dd/MM/yy",
-                            ),
-                            style: GoogleFonts.inter(
-                              color: ColorAsset.success,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Divider(
-                        color: ColorAsset.black.withOpacity(0.2),
-                      ),
-                    ],
-                  ),
-                Text(
-                  "Transaksi",
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w500,
-                    color: ColorAsset.black,
-                    fontSize: 14,
-                  ),
-                ),
-                verticalSpace(10),
-                for (var i = 0; i < 4; i++)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(
-                          color: ColorAsset.black.withOpacity(0.2),
-                        ),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 0,
-                      ),
-                      dense: true,
-                      title: const Text(
-                        "Pengguna A",
-                      ),
-                      subtitle: const Text(
-                        "10/10/24",
-                      ),
-                      trailing: Text(
-                        125000.toCurrency(),
-                      ),
-                    ),
-                  ),
-                Divider(
-                  color: ColorAsset.black.withOpacity(0.2),
-                ),
-                Text(
-                  "Komplain",
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w500,
-                    color: ColorAsset.black,
-                    fontSize: 14,
-                  ),
-                ),
-                verticalSpace(10),
-                for (var i = 0; i < 4; i++)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(
-                          color: ColorAsset.black.withOpacity(0.2),
-                        ),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                      ),
-                      dense: true,
-                      title: const Text(
-                        "Tidak ada kunci rmh",
-                      ),
-                    ),
-                  ),
-              ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          var res = await RoomRepository.show(room.id!);
+          if (res != null) {
+            setState(() {
+              room = res;
+            });
+          }
+        },
+        child: ListView(
+          children: [
+            Image.network(
+              room.category!.imageLink!,
+              height: 250,
+              width: screenWidth(context),
+              fit: BoxFit.cover,
             ),
-          ),
-        ],
+            verticalSpace(10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    room.name ?? "",
+                    style: GoogleFonts.inter(
+                      color: ColorAsset.violet,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    (room.category?.price ?? 0).toCurrency(),
+                    style: GoogleFonts.inter(
+                      color: ColorAsset.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  verticalSpace(5),
+                  Text(
+                    room.category?.description ?? "",
+                    style: GoogleFonts.inter(
+                      color: ColorAsset.black,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Divider(
+                    color: ColorAsset.black.withOpacity(0.2),
+                  ),
+                  if (room.pivot != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Pemilik Kamar",
+                          style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w500,
+                            color: ColorAsset.black,
+                            fontSize: 14,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              room.pivot?.user?.name ?? "-",
+                              style: GoogleFonts.inter(
+                                color: ColorAsset.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              room.pivot?.user?.identityNumber == null &&
+                                      room.pivot?.user?.identityCard == null
+                                  ? "Data Belum Lengkap"
+                                  : "Data Lengkap",
+                              style: GoogleFonts.inter(
+                                color: ColorAsset.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                        verticalSpace(5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Masuk",
+                              style: GoogleFonts.inter(
+                                color: ColorAsset.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                            Text(
+                              DateFormatter.date(
+                                room.pivot?.createdAt,
+                                "dd/MM/yy",
+                              ),
+                              style: GoogleFonts.inter(
+                                color: ColorAsset.success,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          color: ColorAsset.black.withOpacity(0.2),
+                        ),
+                      ],
+                    ),
+                  Text(
+                    "Transaksi",
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w500,
+                      color: ColorAsset.black,
+                      fontSize: 14,
+                    ),
+                  ),
+                  verticalSpace(10),
+                  for (var row in room.transactions)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide(
+                            color: ColorAsset.black.withOpacity(0.2),
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 0,
+                        ),
+                        dense: true,
+                        title: Text(
+                          row.pivotRoom?.user?.name ?? "",
+                        ),
+                        subtitle: Text(
+                          DateFormatter.date(row.date, "dd/MM/yyyy"),
+                        ),
+                        trailing: Text(
+                          (row.price ?? 0).toCurrency(),
+                        ),
+                      ),
+                    ),
+                  Divider(
+                    color: ColorAsset.black.withOpacity(0.2),
+                  ),
+                  Text(
+                    "Komplain",
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w500,
+                      color: ColorAsset.black,
+                      fontSize: 14,
+                    ),
+                  ),
+                  verticalSpace(10),
+                  for (var i = 0; i < 4; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: BorderSide(
+                            color: ColorAsset.black.withOpacity(0.2),
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
+                        dense: true,
+                        title: const Text(
+                          "Tidak ada kunci rmh",
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:ukost/app/models/category/category.dart';
 import 'package:ukost/app/models/expense/expense.dart';
+import 'package:ukost/app/models/graph/graph.dart';
 import 'package:ukost/app/repositories/category/category_repository.dart';
 import 'package:ukost/app/repositories/finance/finance_repository.dart';
 import 'package:ukost/config/color_assets.dart';
@@ -25,42 +26,14 @@ class AdminFragment extends StatefulWidget {
 }
 
 class _AdminFragmentState extends State<AdminFragment> {
-  List<Map<String, dynamic>> lines = [
-    {
-      "label": "11/02/24",
-      "value": 14000,
-    },
-    {
-      "label": "12/02/24",
-      "value": 24000,
-    },
-    {
-      "label": "13/02/24",
-      "value": 5999,
-    },
-    {
-      "label": "14/02/24",
-      "value": 40000,
-    },
-    {
-      "label": "15/02/24",
-      "value": 2000,
-    },
-    {
-      "label": "16/02/24",
-      "value": 15000,
-    },
-    {
-      "label": "17/02/24",
-      "value": 30000,
-    },
-  ];
+  List<Graph> lines = [];
   List<Category> categories = [];
   List<Expense> expenses = [];
 
   Future<void> init() async {
     categories = await CategoryRepository.getCategory();
     expenses = await FinanceRepository.getExpense(DateTime.now());
+    lines = await CategoryRepository.getRecentTransaction();
     setState(() {});
   }
 
@@ -114,7 +87,33 @@ class _AdminFragmentState extends State<AdminFragment> {
                       path: row.user?.profileLink,
                       title: row.title ?? "",
                       subtitle: row.description ?? "",
+          ),
+          verticalSpace(20),
+          const HorizontalText(
+            title: "Pembayaran",
+            trailing: "7 Hari Terakhir",
+          ),
+          verticalSpace(10),
+          Center(
+            child: SizedBox(
+              height: 200,
+              width: screenWidth(context) * 0.9,
+              child: SfCartesianChart(
+                primaryXAxis: const CategoryAxis(),
+                // Chart title
+                title: const ChartTitle(text: ''),
+                tooltipBehavior: TooltipBehavior(enable: true),
+                series: <LineSeries<Graph, String>>[
+                  LineSeries<Graph, String>(
+                    dataSource: lines,
+                    markerSettings: const MarkerSettings(isVisible: true),
+                    xValueMapper: (income, _) => income.xAxis,
+                    yValueMapper: (income, _) => income.yAxis,
+                    // Enable data label
+                    dataLabelSettings: const DataLabelSettings(
+                      isVisible: false,
                     ),
+                  ),
                 ],
               ),
             ),

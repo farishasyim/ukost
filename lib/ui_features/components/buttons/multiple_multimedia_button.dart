@@ -16,9 +16,11 @@ class MultipleMultimediaButton extends StatefulWidget {
     this.paths = const [],
     this.title,
     this.onDelete,
+    required this.path,
   });
   final Function(List<File>) onTap;
   final String? title;
+  final String path;
   final List<String> paths;
   final Function(String)? onDelete;
 
@@ -94,7 +96,7 @@ class _MultipleMultimediaButtonState extends State<MultipleMultimediaButton> {
                         alignment: Alignment.topRight,
                         children: [
                           Image.network(
-                            "${Routes.endpoint}/receipt/$row",
+                            "${Routes.endpoint}/${widget.path}/$row",
                             fit: BoxFit.fitWidth,
                           ),
                           IconButton(

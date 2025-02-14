@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ukost/app/models/transaction/transaction.dart';
 import 'package:ukost/app/repositories/finance/finance_repository.dart';
 import 'package:ukost/config/color_assets.dart';
+import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/navigation_services.dart';
@@ -41,32 +42,34 @@ class _TransactionPageState extends State<TransactionPage> {
       child: Stack(
         children: [
           ListView(
-            padding: const EdgeInsets.symmetric(),
             children: [
               for (var row in transactions)
                 FinanceTile(
-                  onLongPress: () {
-                    Modals().action(
-                      onDelete: () {
-                        Modals().confirmation(
-                          onTap: () async {
-                            var res =
-                                await FinanceRepository.deleteIncome(row.id!);
-                            if (res) {
-                              init();
-                            }
-                          },
-                        );
-                      },
-                      onEdit: () {
-                        nextScreen(
-                          FormTransactionPage(
-                            transaction: row,
-                          ),
-                        );
-                      },
-                    );
-                  },
+                  onLongPress: storage.account?.role == Role.admin
+                      ? () {
+                          Modals().action(
+                            onDelete: () {
+                              Modals().confirmation(
+                                onTap: () async {
+                                  var res =
+                                      await FinanceRepository.deleteIncome(
+                                          row.id!);
+                                  if (res) {
+                                    init();
+                                  }
+                                },
+                              );
+                            },
+                            onEdit: () {
+                              nextScreen(
+                                FormTransactionPage(
+                                  transaction: row,
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      : null,
                   onTap: () {
                     setState(() {
                       if (selected == row.id) {
@@ -92,26 +95,27 @@ class _TransactionPageState extends State<TransactionPage> {
                 ),
             ],
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                right: 20,
-                bottom: 15,
-              ),
-              child: FloatingActionButton(
-                heroTag: "income",
-                onPressed: () {
-                  nextScreen(const FormTransactionPage());
-                },
-                backgroundColor: ColorAsset.violet,
-                child: Icon(
-                  Icons.add_rounded,
-                  color: ColorAsset.white,
+          if (storage.account?.role == Role.admin)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 20,
+                  bottom: 15,
+                ),
+                child: FloatingActionButton(
+                  heroTag: "income",
+                  onPressed: () {
+                    nextScreen(const FormTransactionPage());
+                  },
+                  backgroundColor: ColorAsset.violet,
+                  child: Icon(
+                    Icons.add_rounded,
+                    color: ColorAsset.white,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
