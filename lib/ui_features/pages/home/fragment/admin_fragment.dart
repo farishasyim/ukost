@@ -87,100 +87,106 @@ class _AdminFragmentState extends State<AdminFragment> {
                       path: row.user?.profileLink,
                       title: row.title ?? "",
                       subtitle: row.description ?? "",
-          ),
-          verticalSpace(20),
-          const HorizontalText(
-            title: "Pembayaran",
-            trailing: "7 Hari Terakhir",
-          ),
-          verticalSpace(10),
-          Center(
-            child: SizedBox(
-              height: 200,
-              width: screenWidth(context) * 0.9,
-              child: SfCartesianChart(
-                primaryXAxis: const CategoryAxis(),
-                // Chart title
-                title: const ChartTitle(text: ''),
-                tooltipBehavior: TooltipBehavior(enable: true),
-                series: <LineSeries<Graph, String>>[
-                  LineSeries<Graph, String>(
-                    dataSource: lines,
-                    markerSettings: const MarkerSettings(isVisible: true),
-                    xValueMapper: (income, _) => income.xAxis,
-                    yValueMapper: (income, _) => income.yAxis,
-                    // Enable data label
-                    dataLabelSettings: const DataLabelSettings(
-                      isVisible: false,
                     ),
+                  verticalSpace(20),
+                  const HorizontalText(
+                    title: "Pembayaran",
+                    trailing: "7 Hari Terakhir",
                   ),
-                ],
-              ),
-            ),
-            verticalSpace(20),
-            HorizontalText(
-              title: "Jenis Kamar",
-              trailing: "Detil",
-              onTap: () {},
-            ),
-            verticalSpace(10),
-            SizedBox(
-              height: 200,
-              width: screenWidth(context),
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.only(left: 20),
-                children: [
-                  for (var row in categories)
-                    RoomCard(
-                      onTap: () async {
-                        Modals().loading();
-                        var res = await CategoryRepository.show(row.id!);
-                        backScreen();
-                        if (res != null) {
-                          nextScreen(DetailCategoryPage(
-                            category: res,
-                          ));
-                        }
-                      },
-                      title: row.name ?? "-",
-                      subtitle: row.price?.toCurrency(),
-                      path: row.imageLink,
-                    ),
-                ],
-              ),
-            ),
-            verticalSpace(20),
-            const HorizontalText(
-              title: "Pembayaran",
-              trailing: "7 Hari Terakhir",
-            ),
-            verticalSpace(10),
-            Center(
-              child: SizedBox(
-                height: 200,
-                width: screenWidth(context) * 0.9,
-                child: SfCartesianChart(
-                  primaryXAxis: const CategoryAxis(),
-                  // Chart title
-                  title: const ChartTitle(text: ''),
-                  tooltipBehavior: TooltipBehavior(enable: true),
-                  series: <LineSeries<Map, String>>[
-                    LineSeries<Map, String>(
-                      dataSource: lines,
-                      markerSettings: const MarkerSettings(isVisible: true),
-                      xValueMapper: (income, _) => income["label"],
-                      yValueMapper: (income, _) => income["value"],
-                      // Enable data label
-                      dataLabelSettings: const DataLabelSettings(
-                        isVisible: false,
+                  verticalSpace(10),
+                  Center(
+                    child: SizedBox(
+                      height: 200,
+                      width: screenWidth(context) * 0.9,
+                      child: SfCartesianChart(
+                        primaryXAxis: const CategoryAxis(),
+                        // Chart title
+                        title: const ChartTitle(text: ''),
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        series: <LineSeries<Graph, String>>[
+                          LineSeries<Graph, String>(
+                            dataSource: lines,
+                            markerSettings:
+                                const MarkerSettings(isVisible: true),
+                            xValueMapper: (income, _) => income.xAxis,
+                            yValueMapper: (income, _) => income.yAxis,
+                            // Enable data label
+                            dataLabelSettings: const DataLabelSettings(
+                              isVisible: false,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  verticalSpace(20),
+                  HorizontalText(
+                    title: "Jenis Kamar",
+                    trailing: "Detil",
+                    onTap: () {},
+                  ),
+                  verticalSpace(10),
+                  SizedBox(
+                    height: 200,
+                    width: screenWidth(context),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.only(left: 20),
+                      children: [
+                        for (var row in categories)
+                          RoomCard(
+                            onTap: () async {
+                              Modals().loading();
+                              var res = await CategoryRepository.show(row.id!);
+                              backScreen();
+                              if (res != null) {
+                                nextScreen(DetailCategoryPage(
+                                  category: res,
+                                ));
+                              }
+                            },
+                            title: row.name ?? "-",
+                            subtitle: row.price?.toCurrency(),
+                            path: row.imageLink,
+                          ),
+                      ],
+                    ),
+                  ),
+                  verticalSpace(20),
+                  const HorizontalText(
+                    title: "Pembayaran",
+                    trailing: "7 Hari Terakhir",
+                  ),
+                  verticalSpace(10),
+                  Center(
+                    child: SizedBox(
+                      height: 200,
+                      width: screenWidth(context) * 0.9,
+                      child: SfCartesianChart(
+                        primaryXAxis: const CategoryAxis(),
+                        // Chart title
+                        title: const ChartTitle(text: ''),
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        series: <LineSeries<Graph, String>>[
+                          LineSeries<Graph, String>(
+                            dataSource: lines,
+                            markerSettings:
+                                const MarkerSettings(isVisible: true),
+                            xValueMapper: (transaction, _) => transaction.xAxis,
+                            yValueMapper: (transaction, _) => transaction.yAxis,
+                            // Enable data label
+                            dataLabelSettings: const DataLabelSettings(
+                              isVisible: false,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  verticalSpace(20),
+                ],
               ),
             ),
-            verticalSpace(20),
           ],
         ),
       ),
