@@ -9,10 +9,11 @@ class ExpanseCard extends StatelessWidget {
     this.title = "",
     this.path,
     this.subtitle = "",
+    this.trailing,
     this.onTap,
   });
   final String title, subtitle;
-  final String? path;
+  final String? path, trailing;
   final Function()? onTap;
 
   @override

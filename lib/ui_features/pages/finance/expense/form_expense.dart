@@ -116,6 +116,7 @@ class _FormExpensePageState extends State<FormExpensePage> {
               ),
               verticalSpace(5),
               MultipleMultimediaButton(
+                path: "receipt",
                 paths: existed,
                 onDelete: (e) {
                   deleted.add(e);
@@ -170,6 +171,7 @@ class _FormExpensePageState extends State<FormExpensePage> {
                         );
                       }
                     },
+                    loading: loading.value,
                     label: "Submit",
                     radius: 8,
                     color: ColorAsset.violet,

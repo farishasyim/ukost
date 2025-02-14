@@ -14,9 +14,11 @@ class FinanceTile extends StatelessWidget {
     this.onLongPress,
     this.expanded = false,
     this.onTap,
+    this.trailing,
   });
   final String? title, subtitle;
   final int price;
+  final Widget? trailing;
   final List<Widget> children;
   final Function()? onLongPress, onTap;
   final bool expanded;
@@ -44,13 +46,14 @@ class FinanceTile extends StatelessWidget {
                     style: GoogleFonts.inter(),
                   )
                 : null,
-            trailing: Text(
-              price.toCurrency(),
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                color: ColorAsset.success,
-              ),
-            ),
+            trailing: trailing ??
+                Text(
+                  price.toCurrency(),
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: ColorAsset.success,
+                  ),
+                ),
           ),
         ),
         SizedBox(

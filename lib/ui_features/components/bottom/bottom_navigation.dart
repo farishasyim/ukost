@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ukost/config/color_assets.dart';
+import 'package:ukost/config/constant.dart';
 
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({
@@ -12,28 +13,47 @@ class BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> menus = [
-      {
-        "icon": Icons.home_rounded,
-        "label": "Utama",
-      },
-      {
-        "icon": Icons.receipt_long_rounded,
-        "label": "Transaksi",
-      },
-      {
-        "icon": Icons.bed_rounded,
-        "label": "Ruangan",
-      },
-      {
-        "icon": Icons.people_alt_rounded,
-        "label": "Pengguna",
-      },
-      {
-        "icon": Icons.person_rounded,
-        "label": "Profil",
-      },
-    ];
+    List<Map<String, dynamic>> menus = [];
+
+    if (storage.account?.role == Role.admin) {
+      menus = [
+        {
+          "icon": Icons.home_rounded,
+          "label": "Utama",
+        },
+        {
+          "icon": Icons.receipt_long_rounded,
+          "label": "Transaksi",
+        },
+        {
+          "icon": Icons.bed_rounded,
+          "label": "Ruangan",
+        },
+        {
+          "icon": Icons.people_alt_rounded,
+          "label": "Pengguna",
+        },
+        {
+          "icon": Icons.person_rounded,
+          "label": "Profil",
+        },
+      ];
+    } else {
+      menus = [
+        {
+          "icon": Icons.home_rounded,
+          "label": "Utama",
+        },
+        {
+          "icon": Icons.receipt_long_rounded,
+          "label": "Transaksi",
+        },
+        {
+          "icon": Icons.person_rounded,
+          "label": "Profil",
+        },
+      ];
+    }
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       showSelectedLabels: false,

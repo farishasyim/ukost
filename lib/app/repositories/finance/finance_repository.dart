@@ -8,10 +8,16 @@ import 'package:ukost/config/log.dart';
 import 'package:ukost/config/routes.dart';
 
 class FinanceRepository {
-  static Future<List<Transaction>> getIncome() async {
+  static Future<List<Transaction>> getIncome(
+      [TransactionStatus? status]) async {
+    Map<String, dynamic> request = {};
+    if (status != null) {
+      request["status"] = status.name;
+    }
     try {
       var res = await dio.get(
         Routes.transaction,
+        queryParameters: request,
         options: Header.init(),
       );
       if (res.statusCode == 200) {
