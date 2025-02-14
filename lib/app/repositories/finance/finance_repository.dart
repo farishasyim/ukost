@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:ukost/app/models/expense/expense.dart';
 import 'package:ukost/app/models/transaction/transaction.dart';
 import 'package:ukost/config/constant.dart';
+import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/header.dart';
 import 'package:ukost/config/json_list.dart';
 import 'package:ukost/config/log.dart';
@@ -25,10 +26,13 @@ class FinanceRepository {
     return [];
   }
 
-  static Future<List<Expense>> getExpense() async {
+  static Future<List<Expense>> getExpense([DateTime? date]) async {
     try {
       var res = await dio.get(
         Routes.expense,
+        queryParameters: {
+          "date": date != null ? DateFormatter.date(date, "yyyy-MM-dd") : null,
+        },
         options: Header.init(),
       );
       if (res.statusCode == 200) {

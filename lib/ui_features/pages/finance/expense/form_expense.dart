@@ -153,6 +153,7 @@ class _FormExpensePageState extends State<FormExpensePage> {
                               request["photos[]"]
                                   .add(await MultipartFile.fromFile(row.path));
                             }
+                            print(request);
                             var res = false;
                             if (widget.expense == null) {
                               res =

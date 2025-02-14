@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:ukost/app/models/category/category.dart';
+import 'package:ukost/app/models/expense/expense.dart';
 import 'package:ukost/app/repositories/category/category_repository.dart';
+import 'package:ukost/app/repositories/finance/finance_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/dialog.dart';
+import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/config/number_extension.dart';
 import 'package:ukost/ui_features/components/appbar/appbar_primary.dart';
@@ -53,9 +56,11 @@ class _AdminFragmentState extends State<AdminFragment> {
     },
   ];
   List<Category> categories = [];
+  List<Expense> expenses = [];
 
-  void init() async {
+  Future<void> init() async {
     categories = await CategoryRepository.getCategory();
+    expenses = await FinanceRepository.getExpense(DateTime.now());
     setState(() {});
   }
 
@@ -69,110 +74,116 @@ class _AdminFragmentState extends State<AdminFragment> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          AppBarPrimary(
-            height: null,
-            title: "Selamat Datang,",
-            subtitle: storage.account?.name ?? "",
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Divider(
-              color: ColorAsset.violet,
+    return RefreshIndicator(
+      onRefresh: () async {
+        await init();
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            AppBarPrimary(
+              height: null,
+              title: "Selamat Datang,",
+              subtitle: storage.account?.name ?? "",
             ),
-          ),
-          verticalSpace(10),
-          HorizontalText(
-            title: "Pengeluaran November 2024",
-            trailing: "Detil",
-            onTap: () {},
-          ),
-          verticalSpace(10),
-          SizedBox(
-            height: 70,
-            width: screenWidth(context),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(left: 20),
-              children: [
-                for (var i = 1; i < 4; i++)
-                  ExpanseCard(
-                    onTap: () {},
-                    title: "-",
-                    subtitle: "-",
-                  ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Divider(
+                color: ColorAsset.violet,
+              ),
             ),
-          ),
-          verticalSpace(20),
-          HorizontalText(
-            title: "Jenis Kamar",
-            trailing: "Detil",
-            onTap: () {},
-          ),
-          verticalSpace(10),
-          SizedBox(
-            height: 200,
-            width: screenWidth(context),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(left: 20),
-              children: [
-                for (var row in categories)
-                  RoomCard(
-                    onTap: () async {
-                      Modals().loading();
-                      var res = await CategoryRepository.show(row.id!);
-                      backScreen();
-                      if (res != null) {
-                        nextScreen(DetailCategoryPage(
-                          category: res,
-                        ));
-                      }
-                    },
-                    title: row.name ?? "-",
-                    subtitle: row.price?.toCurrency(),
-                    path: row.imageLink,
-                  ),
-              ],
+            verticalSpace(10),
+            HorizontalText(
+              title: "Pengeluaran ${DateFormatter.date(null, "MMMM yyyy")}",
+              trailing: "Detil",
+              onTap: () {},
             ),
-          ),
-          verticalSpace(20),
-          const HorizontalText(
-            title: "Pembayaran",
-            trailing: "7 Hari Terakhir",
-          ),
-          verticalSpace(10),
-          Center(
-            child: SizedBox(
-              height: 200,
-              width: screenWidth(context) * 0.9,
-              child: SfCartesianChart(
-                primaryXAxis: const CategoryAxis(),
-                // Chart title
-                title: const ChartTitle(text: ''),
-                tooltipBehavior: TooltipBehavior(enable: true),
-                series: <LineSeries<Map, String>>[
-                  LineSeries<Map, String>(
-                    dataSource: lines,
-                    markerSettings: const MarkerSettings(isVisible: true),
-                    xValueMapper: (income, _) => income["label"],
-                    yValueMapper: (income, _) => income["value"],
-                    // Enable data label
-                    dataLabelSettings: const DataLabelSettings(
-                      isVisible: false,
+            verticalSpace(10),
+            SizedBox(
+              height: 70,
+              width: screenWidth(context),
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.only(left: 20),
+                children: [
+                  for (var row in expenses)
+                    ExpanseCard(
+                      onTap: () {},
+                      path: row.user?.profileLink,
+                      title: row.title ?? "",
+                      subtitle: row.description ?? "",
                     ),
-                  ),
                 ],
               ),
             ),
-          ),
-          verticalSpace(20),
-        ],
+            verticalSpace(20),
+            HorizontalText(
+              title: "Jenis Kamar",
+              trailing: "Detil",
+              onTap: () {},
+            ),
+            verticalSpace(10),
+            SizedBox(
+              height: 200,
+              width: screenWidth(context),
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.only(left: 20),
+                children: [
+                  for (var row in categories)
+                    RoomCard(
+                      onTap: () async {
+                        Modals().loading();
+                        var res = await CategoryRepository.show(row.id!);
+                        backScreen();
+                        if (res != null) {
+                          nextScreen(DetailCategoryPage(
+                            category: res,
+                          ));
+                        }
+                      },
+                      title: row.name ?? "-",
+                      subtitle: row.price?.toCurrency(),
+                      path: row.imageLink,
+                    ),
+                ],
+              ),
+            ),
+            verticalSpace(20),
+            const HorizontalText(
+              title: "Pembayaran",
+              trailing: "7 Hari Terakhir",
+            ),
+            verticalSpace(10),
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: screenWidth(context) * 0.9,
+                child: SfCartesianChart(
+                  primaryXAxis: const CategoryAxis(),
+                  // Chart title
+                  title: const ChartTitle(text: ''),
+                  tooltipBehavior: TooltipBehavior(enable: true),
+                  series: <LineSeries<Map, String>>[
+                    LineSeries<Map, String>(
+                      dataSource: lines,
+                      markerSettings: const MarkerSettings(isVisible: true),
+                      xValueMapper: (income, _) => income["label"],
+                      yValueMapper: (income, _) => income["value"],
+                      // Enable data label
+                      dataLabelSettings: const DataLabelSettings(
+                        isVisible: false,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            verticalSpace(20),
+          ],
+        ),
       ),
     );
   }

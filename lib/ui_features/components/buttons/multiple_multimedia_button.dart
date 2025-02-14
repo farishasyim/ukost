@@ -7,6 +7,7 @@ import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/file_picker.dart';
 import 'package:ukost/config/routes.dart';
+import 'package:ukost/config/snackbar.dart';
 
 class MultipleMultimediaButton extends StatefulWidget {
   const MultipleMultimediaButton({
@@ -41,14 +42,25 @@ class _MultipleMultimediaButtonState extends State<MultipleMultimediaButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        var pick = await FilePickerHelper.pickFile(
-          fileType: FileType.image,
-        );
-        if (pick.isNotEmpty) {
-          setState(() {
-            files.addAll(pick);
-          });
+        int total = paths.length + files.length;
+        if (total < 5) {
+          var pick = await FilePickerHelper.pickFile(
+            fileType: FileType.image,
+            allowMultiple: true,
+          );
+          for (var row in pick) {
+            int total = paths.length + files.length;
+            if (total < 5) {
+              files.add(row);
+            } else {
+              Snackbar.error("Maksimal mengirimkan gambar hanya 5");
+              break;
+            }
+          }
+          setState(() {});
           widget.onTap(files);
+        } else {
+          Snackbar.error("Maksimal mengirimkan gambar hanya 5");
         }
       },
       borderRadius: BorderRadius.circular(8),

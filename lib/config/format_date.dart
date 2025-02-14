@@ -17,11 +17,13 @@ class DateFormatter {
   }
 
   static String time(DateTime? time, [String? format]) =>
-      DateFormat(format ?? "HH:mm a").format(time ?? DateTime.now());
+      DateFormat(format ?? "HH:mm a", "id_ID").format(time ?? DateTime.now());
 
   static String date(DateTime? date, [String? format]) =>
-      DateFormat(format ?? "dd-MM-yyyy").format(date ?? DateTime.now());
+      DateFormat(format ?? "dd-MM-yyyy", "id_ID")
+          .format(date ?? DateTime.now());
 
   static String dateTime(DateTime? date, [String? format]) =>
-      DateFormat(format ?? "dd-MM-yyyy HH:mm a").format(date ?? DateTime.now());
+      DateFormat(format ?? "dd-MM-yyyy HH:mm a", "id_ID")
+          .format(date ?? DateTime.now());
 }

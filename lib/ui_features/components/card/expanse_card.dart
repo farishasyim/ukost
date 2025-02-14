@@ -42,9 +42,14 @@ class ExpanseCard extends StatelessWidget {
                   height: 40,
                   width: 40,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ColorAsset.violet,
-                  ),
+                      shape: BoxShape.circle,
+                      color: ColorAsset.violet,
+                      image: path != null
+                          ? DecorationImage(
+                              image: NetworkImage(path!),
+                              fit: BoxFit.cover,
+                            )
+                          : null),
                 ),
                 horizontalSpace(10),
                 Column(

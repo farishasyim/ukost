@@ -12,6 +12,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: appname,
+      locale: const Locale("id", "ID"),
       theme: ThemeData(
         scaffoldBackgroundColor: ColorAsset.white,
         tabBarTheme: TabBarTheme(

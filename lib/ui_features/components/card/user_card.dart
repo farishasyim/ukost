@@ -22,7 +22,7 @@ class UserCard extends StatelessWidget {
     return Padding(
       padding: padding ??
           const EdgeInsets.only(
-            bottom: 10,
+            bottom: 15,
           ),
       child: ListTile(
         onTap: onTap,
