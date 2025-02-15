@@ -215,37 +215,6 @@ class _DetailRoomPageState extends State<DetailRoomPage> {
                         ),
                       ),
                     ),
-                  Divider(
-                    color: ColorAsset.black.withOpacity(0.2),
-                  ),
-                  Text(
-                    "Komplain",
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w500,
-                      color: ColorAsset.black,
-                      fontSize: 14,
-                    ),
-                  ),
-                  verticalSpace(10),
-                  for (var i = 0; i < 4; i++)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: ListTile(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          side: BorderSide(
-                            color: ColorAsset.black.withOpacity(0.2),
-                          ),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                        ),
-                        dense: true,
-                        title: const Text(
-                          "Tidak ada kunci rmh",
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),

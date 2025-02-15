@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ukost/app/models/complain/complain.dart';
 import 'package:ukost/app/repositories/complain/complain_repository.dart';
 import 'package:ukost/config/color_assets.dart';
+import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/dialog.dart';
+import 'package:ukost/config/export.dart';
 import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/navigation_services.dart';
+import 'package:ukost/ui_features/components/buttons/primary_button.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
 import 'package:ukost/ui_features/components/tile/finance_tile.dart';
 import 'package:ukost/ui_features/pages/complain/form_complain_page.dart';
@@ -120,6 +123,20 @@ class _ComplaintPageState extends State<ComplaintPage> {
                           },
                         );
                       },
+                    ),
+                  if (storage.account?.role == Role.admin &&
+                      row.adminId == null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      child: PrimaryButton(
+                        radius: 8,
+                        label: "Telah diperbaiki",
+                        color: ColorAsset.violet,
+                        onTap: () {},
+                      ),
                     ),
                 ],
               ),

@@ -99,23 +99,6 @@ class FormUser extends StatelessWidget {
             children: [
               const Divider(),
               const HorizontalText(
-                title: "Pilih Ruangan",
-                padding: EdgeInsets.zero,
-              ),
-              verticalSpace(5),
-              DropdownButton<String>(
-                value: selectedRoom,
-                onChanged: (newValue) {
-                  onSelectRoom!(newValue!); // Memilih ruangan
-                },
-                items: rooms!.map<DropdownMenuItem<String>>((String room) {
-                  return DropdownMenuItem<String>(
-                    value: room,
-                    child: Text(room),
-                  );
-                }).toList(),
-              ),
-              const HorizontalText(
                 title: "Identitas",
                 padding: EdgeInsets.zero,
               ),

@@ -42,6 +42,8 @@ class _TransactionPageState extends State<TransactionPage> {
       child: Stack(
         children: [
           ListView(
+            padding:
+                storage.account?.role == Role.admin ? EdgeInsets.zero : null,
             children: [
               for (var row in transactions)
                 FinanceTile(

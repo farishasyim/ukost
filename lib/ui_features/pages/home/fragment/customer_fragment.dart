@@ -5,6 +5,7 @@ import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/format_date.dart';
+import 'package:ukost/config/number_extension.dart';
 import 'package:ukost/ui_features/components/appbar/appbar_primary.dart';
 import 'package:ukost/ui_features/components/card/expanse_card.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
@@ -67,9 +68,10 @@ class _CustomerFragmentState extends State<CustomerFragment> {
               children: [
                 for (var row in transactions)
                   ExpanseCard(
+                    path: row.pivotRoom?.user?.profileLink,
                     onTap: () {},
-                    title: row.pivotRoom?.user?.name ?? "-",
-                    subtitle: DateFormatter.date(row.date, "dd/MM/yyyy"),
+                    title: DateFormatter.date(row.date, "dd/MM/yyyy"),
+                    subtitle: (row.price ?? 0).toCurrency(),
                   ),
               ],
             ),
