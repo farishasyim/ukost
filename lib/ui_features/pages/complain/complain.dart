@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ukost/app/models/complain/complain.dart';
 import 'package:ukost/app/repositories/complain/complain_repository.dart';
-import 'package:ukost/config/color_assets.dart';
-import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/export.dart';
 import 'package:ukost/config/format_date.dart';
@@ -48,17 +46,19 @@ class _ComplaintPageState extends State<ComplaintPage> {
       appBar: AppBar(
         title: const Text("Komplain"),
       ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: "expense",
-        onPressed: () {
-          nextScreen(const FormComplainPage());
-        },
-        backgroundColor: ColorAsset.violet,
-        child: Icon(
-          Icons.add_rounded,
-          color: ColorAsset.white,
-        ),
-      ),
+      floatingActionButton: storage.account?.role == Role.customer
+          ? FloatingActionButton(
+              heroTag: "expense",
+              onPressed: () {
+                nextScreen(const FormComplainPage());
+              },
+              backgroundColor: ColorAsset.violet,
+              child: Icon(
+                Icons.add_rounded,
+                color: ColorAsset.white,
+              ),
+            )
+          : null,
       body: RefreshIndicator(
         onRefresh: () async {
           await init();

@@ -4,12 +4,14 @@ class Transaction {
   int? id, pivotRoomId, adminId, price;
   String? invoice, status, proofPayment, url;
   PivotRoom? pivotRoom;
-  DateTime? date, createdAt;
+  DateTime? date, createdAt, startPeriod, endPeriod;
 
   Transaction({
     this.date,
     this.adminId,
     this.id,
+    this.startPeriod,
+    this.endPeriod,
     this.invoice,
     this.pivotRoom,
     this.createdAt,
@@ -35,6 +37,12 @@ class Transaction {
         date: json["date"] != null ? DateTime.parse(json["date"]) : null,
         createdAt: json["created_at"] != null
             ? DateTime.parse(json["created_at"])
+            : null,
+        startPeriod: json["start_period"] != null
+            ? DateTime.parse(json["start_period"])
+            : null,
+        endPeriod: json["end_period"] != null
+            ? DateTime.parse(json["end_period"])
             : null,
       );
 }
