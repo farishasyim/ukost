@@ -89,6 +89,9 @@ class _RoomPageState extends State<RoomPage> {
                                 for (var room in category.rooms)
                                   RoomCard(
                                     path: category.imageLink,
+                                    count: room.pivot != null
+                                        ? (room.pivot?.bills ?? 0)
+                                        : null,
                                     onTap: () async {
                                       Modals().loading();
                                       var res =

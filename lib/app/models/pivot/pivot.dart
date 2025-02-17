@@ -6,8 +6,10 @@ class PivotRoom {
   DateTime? leftAt, createdAt;
   User? user;
   Room? room;
+  int bills;
 
   PivotRoom({
+    this.bills = 0,
     this.room,
     this.createdAt,
     this.customerId,
@@ -19,6 +21,7 @@ class PivotRoom {
 
   factory PivotRoom.fromJson(Map<String, dynamic> json) => PivotRoom(
         id: json["id"],
+        bills: json["bills"] ?? 0,
         room: json["room"] != null ? Room.fromJson(json["room"]) : null,
         customerId: json["customer_id"],
         createdAt: json["created_at"] != null

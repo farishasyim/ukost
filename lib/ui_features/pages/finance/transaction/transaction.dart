@@ -3,12 +3,16 @@ import 'package:ukost/app/models/transaction/transaction.dart';
 import 'package:ukost/app/repositories/finance/finance_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constant.dart';
+import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/navigation_services.dart';
+import 'package:ukost/config/snackbar.dart';
+import 'package:ukost/ui_features/components/dialog/dialog_filter_transaction.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
 import 'package:ukost/ui_features/components/tile/finance_tile.dart';
 import 'package:ukost/ui_features/pages/finance/transaction/form_transaction.dart';
+import 'package:ukost/ui_features/pages/finance/transaction/report_transaction.dart';
 
 class TransactionPage extends StatefulWidget {
   const TransactionPage({super.key});
@@ -105,16 +109,59 @@ class _TransactionPageState extends State<TransactionPage> {
                   right: 20,
                   bottom: 15,
                 ),
-                child: FloatingActionButton(
-                  heroTag: "income",
-                  onPressed: () {
-                    nextScreen(const FormTransactionPage());
-                  },
-                  backgroundColor: ColorAsset.violet,
-                  child: Icon(
-                    Icons.add_rounded,
-                    color: ColorAsset.white,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FloatingActionButton(
+                      elevation: 1,
+                      mini: true,
+                      heroTag: "report_transaction",
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          builder: (e) {
+                            return DialogFilterTransaction(
+                              onTap: (e) async {
+                                var res = await FinanceRepository
+                                    .getReportTransaction(e);
+                                if (res.isEmpty) {
+                                  Snackbar.error("Data kosong");
+                                  return;
+                                }
+                                nextScreen(
+                                  ReportTransactionPage(
+                                    transactions: res,
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                      backgroundColor: Colors.grey,
+                      child: Icon(
+                        Icons.summarize_rounded,
+                        color: ColorAsset.white,
+                      ),
+                    ),
+                    verticalSpace(5),
+                    FloatingActionButton(
+                      elevation: 1,
+                      heroTag: "income",
+                      onPressed: () {
+                        nextScreen(const FormTransactionPage());
+                      },
+                      backgroundColor: ColorAsset.violet,
+                      child: Icon(
+                        Icons.add_rounded,
+                        color: ColorAsset.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

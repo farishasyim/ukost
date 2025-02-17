@@ -7,9 +7,12 @@ import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/navigation_services.dart';
+import 'package:ukost/config/snackbar.dart';
+import 'package:ukost/ui_features/components/dialog/dialog_filter_expense.dart';
 import 'package:ukost/ui_features/components/horizontal/horizontal_text.dart';
 import 'package:ukost/ui_features/components/tile/finance_tile.dart';
 import 'package:ukost/ui_features/pages/finance/expense/form_expense.dart';
+import 'package:ukost/ui_features/pages/finance/expense/report_expense.dart';
 
 class ExpensePage extends StatefulWidget {
   const ExpensePage({super.key});
@@ -125,16 +128,72 @@ class _ExpensePageState extends State<ExpensePage> {
                 right: 20,
                 bottom: 15,
               ),
-              child: FloatingActionButton(
-                heroTag: "expense",
-                onPressed: () {
-                  nextScreen(const FormExpensePage());
-                },
-                backgroundColor: ColorAsset.violet,
-                child: Icon(
-                  Icons.add_rounded,
-                  color: ColorAsset.white,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FloatingActionButton(
+                    elevation: 1,
+                    mini: true,
+                    heroTag: "report_expense",
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        builder: (e) {
+                          return DialogFilterExpense(
+                            onTap: (e) async {
+                              var res =
+                                  await FinanceRepository.getReportExpense(e);
+                              if (res.isEmpty) {
+                                Snackbar.error("Data kosong");
+                                return;
+                              }
+
+                              DateTime start = DateTime.parse(e["start"]);
+                              DateTime end = DateTime.parse(e["end"]);
+
+                              var period = DateFormatter.monthYear(start) ==
+                                      DateFormatter.monthYear(
+                                        end,
+                                      )
+                                  ? DateFormatter.monthYear(
+                                      start,
+                                    )
+                                  : "${DateFormatter.monthYear(
+                                      start,
+                                    )} - ${DateFormatter.monthYear(end)}";
+
+                              nextScreen(ReportExpensePage(
+                                period: period,
+                                expenses: res,
+                              ));
+                            },
+                          );
+                        },
+                      );
+                    },
+                    backgroundColor: Colors.grey,
+                    child: Icon(
+                      Icons.summarize_rounded,
+                      color: ColorAsset.white,
+                    ),
+                  ),
+                  verticalSpace(5),
+                  FloatingActionButton(
+                    heroTag: "expense",
+                    onPressed: () {
+                      nextScreen(const FormExpensePage());
+                    },
+                    backgroundColor: ColorAsset.violet,
+                    child: Icon(
+                      Icons.add_rounded,
+                      color: ColorAsset.white,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

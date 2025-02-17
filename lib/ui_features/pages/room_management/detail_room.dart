@@ -8,6 +8,7 @@ import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/config/number_extension.dart';
+import 'package:ukost/config/snackbar.dart';
 import 'package:ukost/ui_features/components/buttons/primary_button.dart';
 import 'package:ukost/ui_features/components/dialog/dialog_status_room.dart';
 
@@ -193,6 +194,29 @@ class _DetailRoomPageState extends State<DetailRoomPage> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: ListTile(
+                        onTap: row.status == "paid"
+                            ? () {
+                                if (row.url == null) {
+                                  Snackbar.error(
+                                      "Transaksi ini tidak memiliki foto bukti pembayaran");
+                                  return;
+                                }
+
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      child: Image.network(
+                                        row.url!,
+                                        headers: const {
+                                          "Connection": "keep-alive"
+                                        },
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                            : null,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                           side: BorderSide(
@@ -205,10 +229,22 @@ class _DetailRoomPageState extends State<DetailRoomPage> {
                         ),
                         dense: true,
                         title: Text(
-                          row.pivotRoom?.user?.name ?? "",
+                          "${row.pivotRoom?.user?.name ?? ""} | ${DateFormatter.date(row.startPeriod, "MMM yyyy")}",
+                          style: GoogleFonts.inter(
+                            color: row.status == "paid"
+                                ? ColorAsset.black
+                                : ColorAsset.red,
+                          ),
                         ),
                         subtitle: Text(
-                          DateFormatter.date(row.date, "dd/MM/yyyy"),
+                          row.date != null
+                              ? DateFormatter.date(row.date, "dd/MM/yyyy")
+                              : "Belum Lunas",
+                          style: GoogleFonts.inter(
+                            color: row.status == "paid"
+                                ? ColorAsset.black
+                                : ColorAsset.red,
+                          ),
                         ),
                         trailing: Text(
                           (row.price ?? 0).toCurrency(),

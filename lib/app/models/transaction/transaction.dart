@@ -4,13 +4,14 @@ class Transaction {
   int? id, pivotRoomId, adminId, price;
   String? invoice, status, proofPayment, url;
   PivotRoom? pivotRoom;
-  DateTime? date, createdAt, startPeriod, endPeriod;
+  DateTime? date, createdAt, startPeriod, endPeriod, dueDate;
 
   Transaction({
     this.date,
     this.adminId,
     this.id,
     this.startPeriod,
+    this.dueDate,
     this.endPeriod,
     this.invoice,
     this.pivotRoom,
@@ -25,6 +26,8 @@ class Transaction {
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
         id: json["id"],
         url: json["url"],
+        dueDate:
+            json["due_date"] != null ? DateTime.parse(json["due_date"]) : null,
         pivotRoom: json["pivot_room"] != null
             ? PivotRoom.fromJson(json["pivot_room"])
             : null,

@@ -32,6 +32,43 @@ class FinanceRepository {
     return [];
   }
 
+  static Future<List<Transaction>> getReportTransaction(
+      Map<String, dynamic> request) async {
+    try {
+      var res = await dio.get(
+        Routes.reportTransaction,
+        data: request,
+        options: Header.init(),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return JsonList<Transaction>(res.data, (e) => Transaction.fromJson(e))
+            .data;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return [];
+  }
+
+  static Future<List<Expense>> getReportExpense(
+      Map<String, dynamic> request) async {
+    try {
+      var res = await dio.get(
+        Routes.reportExpense,
+        data: request,
+        options: Header.init(),
+      );
+      if (res.statusCode == 200) {
+        Log.message(res);
+        return JsonList<Expense>(res.data, (e) => Expense.fromJson(e)).data;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return [];
+  }
+
   static Future<List<Expense>> getExpense([DateTime? date]) async {
     try {
       var res = await dio.get(

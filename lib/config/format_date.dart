@@ -23,6 +23,9 @@ class DateFormatter {
       DateFormat(format ?? "dd-MM-yyyy", "id_ID")
           .format(date ?? DateTime.now());
 
+  static String monthYear(DateTime? date, [String? format]) =>
+      DateFormat(format ?? "MMM yy", "id_ID").format(date ?? DateTime.now());
+
   static String dateTime(DateTime? date, [String? format]) =>
       DateFormat(format ?? "dd-MM-yyyy HH:mm a", "id_ID")
           .format(date ?? DateTime.now());
