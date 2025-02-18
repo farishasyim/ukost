@@ -11,7 +11,7 @@ class AuthRepository {
       var res = await dio.post(
         Routes.login,
         data: {
-          'email': email,
+          'identity': email,
           'password': password,
         },
         options: Header.init(),

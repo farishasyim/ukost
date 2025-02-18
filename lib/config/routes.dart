@@ -22,10 +22,12 @@ class Routes {
   // -------------- USER MANAGEMENT ------------------
   static const String userManagement = "$api/user-management";
   static const String userManagementStore = "$userManagement/store";
+  static const String sentCredential = "$userManagement/sent-credential";
 
   // --------------- FINANCE ---------------
   static const String transaction = "$api/transaction";
   static const String recentTransaction = "$transaction/recent";
+  static const String sentInvoice = "$transaction/sent-invoice";
   static const String reportTransaction = "$transaction/report";
   static const String storeTransaction = "$transaction/store";
   static const String expense = "$api/expense";

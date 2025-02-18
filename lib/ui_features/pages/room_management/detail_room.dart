@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ukost/app/models/room/room.dart';
+import 'package:ukost/app/repositories/finance/finance_repository.dart';
 import 'package:ukost/app/repositories/room/room_repository.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
@@ -194,29 +195,41 @@ class _DetailRoomPageState extends State<DetailRoomPage> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: ListTile(
-                        onTap: row.status == "paid"
-                            ? () {
-                                if (row.url == null) {
-                                  Snackbar.error(
-                                      "Transaksi ini tidak memiliki foto bukti pembayaran");
-                                  return;
-                                }
+                        onTap: () {
+                          if (row.status == "paid") {
+                            if (row.url == null) {
+                              Snackbar.error(
+                                  "Transaksi ini tidak memiliki foto bukti pembayaran");
+                              return;
+                            }
 
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Dialog(
-                                      child: Image.network(
-                                        row.url!,
-                                        headers: const {
-                                          "Connection": "keep-alive"
-                                        },
-                                      ),
-                                    );
-                                  },
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  child: Image.network(
+                                    row.url!,
+                                    headers: const {"Connection": "keep-alive"},
+                                  ),
                                 );
-                              }
-                            : null,
+                              },
+                            );
+                          } else {
+                            Modals().confirmation(
+                              title:
+                                  "Apakah anda yakin ingin mengirimkan tagihan kepada pengguna ini?",
+                              onTap: () async {
+                                Modals().loading();
+                                var res = await FinanceRepository.sentInvoice(
+                                    row.id!);
+                                backScreen();
+                                if (res) {
+                                  Snackbar.message("Invoice berhasil dikirim");
+                                }
+                              },
+                            );
+                          }
+                        },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                           side: BorderSide(

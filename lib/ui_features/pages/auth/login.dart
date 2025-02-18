@@ -94,9 +94,9 @@ class _LoginPageState extends State<LoginPage> {
                     verticalSpace(30),
                     TextFieldPrimary(
                       controller: emailController,
-                      label: "Email",
+                      label: "Email atau No HP",
                       isRaw: true,
-                      hintText: "contoh@domain",
+                      hintText: "Masukan nomer handphone atau email",
                     ),
                     verticalSpace(20),
                     ValueListenableBuilder(

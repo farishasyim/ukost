@@ -105,6 +105,22 @@ class FinanceRepository {
     return false;
   }
 
+  static Future<bool> sentInvoice(int id) async {
+    try {
+      var res = await dio.get(
+        "${Routes.sentInvoice}/$id",
+        options: Header.init(),
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
+
   static Future<bool> storeExpense(Map<String, dynamic> request) async {
     try {
       var res = await dio.post(

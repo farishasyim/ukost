@@ -16,9 +16,11 @@ class User {
   DateTime? dateOfBirth;
   Role? role;
   PivotRoom? pivot;
+  bool isDefault;
 
   User({
     this.id,
+    this.isDefault = false,
     this.role,
     this.identityCardLink,
     this.dateOfBirth,
@@ -36,6 +38,7 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         name: json["name"],
+        isDefault: json["is_default"],
         pivot: json["pivot"] != null ? PivotRoom.fromJson(json["pivot"]) : null,
         profileLink: json["profile_link"],
         identityCardLink: json["identity_card_link"],

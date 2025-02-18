@@ -38,7 +38,10 @@ class Modals {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 20,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -54,6 +57,7 @@ class Modals {
                     fontWeight: FontWeight.bold,
                     color: ColorAsset.black.withOpacity(0.6),
                   ),
+                  textAlign: TextAlign.center,
                 ),
                 verticalSpace(20),
                 Padding(

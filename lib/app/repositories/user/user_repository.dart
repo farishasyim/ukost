@@ -9,12 +9,14 @@ import 'package:ukost/config/routes.dart';
 class UserRepository {
   static Future<List<User>> getUser({
     UserStatus userStatus = UserStatus.all,
+    String keyword = "",
   }) async {
     try {
       var res = await dio.get(
         Routes.userManagement,
         queryParameters: {
           "type": userStatus.name,
+          "keyword": keyword,
         },
         options: Header.init(),
       );
@@ -43,6 +45,22 @@ class UserRepository {
       Log.error(e);
     }
     return null;
+  }
+
+  static Future<bool> sentCredential(int id) async {
+    try {
+      var res = await dio.get(
+        "${Routes.sentCredential}/$id",
+        options: Header.init(),
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
   }
 
   static Future<User?> update(

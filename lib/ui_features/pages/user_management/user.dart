@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ukost/config/color_assets.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/dialog.dart';
 import 'package:ukost/config/navigation_services.dart';
+import 'package:ukost/config/snackbar.dart';
 import 'package:ukost/ui_features/components/appbar/appbar_primary.dart';
 import 'package:ukost/ui_features/components/card/user_card.dart';
 import 'package:ukost/ui_features/components/inputs/textfield_primary.dart';
@@ -20,6 +22,7 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   List<User> users = [];
   User? selectedUser;
+  TextEditingController keywordController = TextEditingController();
 
   Future<void> init() async {
     users = await UserRepository.getUser();
@@ -83,10 +86,24 @@ class _UserPageState extends State<UserPage> {
                     children: [
                       verticalSpace(10),
                       TextFieldPrimary(
+                        controller: keywordController,
                         hintText: "Mencari nama pengguna",
                         isRaw: true,
                         suffixIcon: IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            Modals().loading();
+                            var res = await UserRepository.getUser(
+                              keyword: keywordController.text,
+                            );
+                            backScreen();
+                            if (res.isEmpty) {
+                              Snackbar.error('Data tidak ditemukan');
+                              return;
+                            }
+                            setState(() {
+                              users = res;
+                            });
+                          },
                           icon: Icon(
                             Icons.search_rounded,
                             color: ColorAsset.black.withOpacity(0.4),

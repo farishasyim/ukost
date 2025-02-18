@@ -133,9 +133,23 @@ class _ComplaintPageState extends State<ComplaintPage> {
                       ),
                       child: PrimaryButton(
                         radius: 8,
-                        label: "Telah diperbaiki",
+                        label: "Telah ditangani",
                         color: ColorAsset.violet,
-                        onTap: () {},
+                        onTap: () async {
+                          Map<String, dynamic> request = {
+                            "title": row.title,
+                            "description": row.description,
+                          };
+                          Modals().loading();
+                          var res = await ComplainRepository.updateComplain(
+                            row.id!,
+                            request,
+                          );
+                          backScreen();
+                          if (res) {
+                            init();
+                          }
+                        },
                       ),
                     ),
                 ],
