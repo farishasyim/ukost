@@ -126,7 +126,8 @@ class _CustomerFragmentState extends State<CustomerFragment> {
                                   onTap: () {
                                     var phoneNumber = "6281223896063";
                                     launchUrl(Uri.parse(
-                                        "https://wa.me/$phoneNumber"));
+                                      "https://wa.me/$phoneNumber",
+                                    ));
                                   },
                                   radius: 8,
                                   color: ColorAsset.violet,

@@ -7,6 +7,7 @@ import 'package:ukost/config/constant.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/config/session_manager.dart';
+import 'package:ukost/config/snackbar.dart';
 import 'package:ukost/ui_features/components/buttons/primary_button.dart';
 import 'package:ukost/ui_features/components/carousel/carousel.dart';
 import 'package:ukost/ui_features/components/inputs/textfield_primary.dart';
@@ -159,7 +160,9 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Snackbar.error("Fitur belum tersedia");
+                          },
                           child: Text(
                             "Ubah Password",
                             style: GoogleFonts.inter(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ukost/app/models/user/user.dart';
 import 'package:ukost/app/repositories/user/user_repository.dart';
 import 'package:ukost/config/constraint.dart';
+import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/navigation_services.dart';
 import 'package:ukost/ui_features/pages/user_management/form_user_management.dart';
 
@@ -20,9 +21,9 @@ class UserDetailPage extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 50,
-              // backgroundImage: NetworkImage(user.profilePictureUrl),
+              backgroundImage: NetworkImage(user.profileLink ?? ""),
             ),
             verticalSpace(20),
             _buildTextField(label: "Nama", initialValue: user.name ?? ''),
@@ -31,13 +32,12 @@ class UserDetailPage extends StatelessWidget {
             _buildTextField(label: "Gender", initialValue: user.gender ?? ''),
             _buildTextField(
                 label: "Tanggal Lahir",
-                initialValue:
-                    user.dateOfBirth?.toLocal().toString().split(' ')[0] ?? ''),
+                initialValue: DateFormatter.date(user.dateOfBirth)),
             _buildTextField(
                 label: "NIK",
-                initialValue: user.identityNumber?.toString() ?? ''),
+                initialValue: (user.identityNumber ?? '-').toString()),
             _buildTextField(
-                label: "Ruangan", initialValue: user.room?.toString() ?? ''),
+                label: "Ruangan", initialValue: user.pivot?.room?.name ?? "-"),
             verticalSpace(20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
