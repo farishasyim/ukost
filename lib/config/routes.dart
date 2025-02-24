@@ -11,6 +11,7 @@ class Routes {
   // ------------ AUTH -------------
   static const String login = "$api/login";
   static const String logout = "$api/logout";
+  static const String changePassword = "$api/change-password";
 
   // -------------- ROOM MANAGEMENT -----------------
   static const String roomManagement = "$api/room-management";

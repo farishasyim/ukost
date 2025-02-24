@@ -59,6 +59,7 @@ class User {
   Map<String, dynamic> toMap() => {
         "id": id,
         "name": name,
+        "is_default": isDefault,
         "email": email,
         "pivot": pivot?.toMap(),
         "phone": phone,

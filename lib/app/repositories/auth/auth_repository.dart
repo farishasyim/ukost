@@ -45,4 +45,21 @@ class AuthRepository {
     }
     return false;
   }
+
+  static Future<bool> changePassword(Map<String, dynamic> request) async {
+    try {
+      var res = await dio.post(
+        Routes.changePassword,
+        data: request,
+        options: Header.init(),
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        Log.message(res);
+        return true;
+      }
+    } on DioException catch (e) {
+      Log.error(e);
+    }
+    return false;
+  }
 }

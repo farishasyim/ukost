@@ -3,13 +3,17 @@ import 'package:ukost/app/models/expense/expense.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/number_extension.dart';
+import 'package:ukost/config/routes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ReportExpensePage extends StatelessWidget {
   const ReportExpensePage({
     super.key,
     required this.period,
     this.expenses = const [],
+    this.request = const {},
   });
+  final Map<String, dynamic> request;
   final List<Expense> expenses;
   final String period;
 
@@ -20,7 +24,23 @@ class ReportExpensePage extends StatelessWidget {
         title: Text("Pengeluaran $period"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          String baseUrl = "${Routes.endpoint}/expense-report";
+
+          if (request.containsKey("start")) {
+            DateTime start = DateTime.parse(request["start"]);
+            baseUrl += "?start=${DateFormatter.date(start, "yyyy-MM-dd")}&";
+          }
+
+          if (request.containsKey("end")) {
+            DateTime end = DateTime.parse(request["end"]);
+            baseUrl += "end=${DateFormatter.date(end, "yyyy-MM-dd")}";
+          }
+
+          print(baseUrl);
+
+          launchUrl(Uri.parse(baseUrl));
+        },
         heroTag: "print-pengeluaran",
         child: const Icon(Icons.print_rounded),
       ),

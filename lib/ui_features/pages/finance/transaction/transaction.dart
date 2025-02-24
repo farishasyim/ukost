@@ -134,6 +134,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                 }
                                 nextScreen(
                                   ReportTransactionPage(
+                                    request: e,
                                     transactions: res,
                                   ),
                                 );

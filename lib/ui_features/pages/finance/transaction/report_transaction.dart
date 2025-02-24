@@ -3,12 +3,16 @@ import 'package:ukost/app/models/transaction/transaction.dart';
 import 'package:ukost/config/constraint.dart';
 import 'package:ukost/config/format_date.dart';
 import 'package:ukost/config/number_extension.dart';
+import 'package:ukost/config/routes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ReportTransactionPage extends StatelessWidget {
   const ReportTransactionPage({
     super.key,
     this.transactions = const [],
+    this.request = const {},
   });
+  final Map<String, dynamic> request;
   final List<Transaction> transactions;
 
   @override
@@ -18,7 +22,26 @@ class ReportTransactionPage extends StatelessWidget {
         title: const Text("Laporan Pembayaran"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          String baseUrl = "${Routes.endpoint}/income-report";
+
+          if (request.containsKey("customer_id")) {
+            baseUrl += "?customer_id=${request["customer_id"]}&";
+          }
+
+          String status = "";
+
+          if (request.containsKey("status")) {
+            if (request["status"] is List) {
+              status = (request["status"] as List).join(",");
+            }
+            baseUrl += "?status=$status";
+          }
+
+          print(baseUrl);
+
+          launchUrl(Uri.parse(baseUrl));
+        },
         child: const Icon(Icons.print_rounded),
       ),
       body: ListView(
@@ -74,7 +97,9 @@ class ReportTransactionPage extends StatelessWidget {
                                 "${DateFormatter.date(row.startPeriod, "dd MMM yy")} - ${DateFormatter.date(row.endPeriod, "dd MMM yy")}"),
                           ),
                           DataCell(
-                            Text(DateFormatter.dateTime(row.date)),
+                            Text(row.date == null
+                                ? "-"
+                                : DateFormatter.dateTime(row.date)),
                           ),
                           DataCell(
                             Text((row.price ?? 0).toCurrency()),

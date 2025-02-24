@@ -169,6 +169,7 @@ class _ExpensePageState extends State<ExpensePage> {
                               nextScreen(ReportExpensePage(
                                 period: period,
                                 expenses: res,
+                                request: e,
                               ));
                             },
                           );
